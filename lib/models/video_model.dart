@@ -6,11 +6,12 @@ class VideoModel {
   final String authorName;
   final String authorAvatar;
   final String description;
-  final int likeCount;
+   int likeCount;
   final int commentCount;
   final int collectCount;
   final int shareCount;
   final int recommendCount;
+  bool isLiked;
 
   VideoModel({
     required this.id,
@@ -25,5 +26,6 @@ class VideoModel {
     this.collectCount = 0,
     this.shareCount = 0,
     this.recommendCount = 0,
+    this.isLiked = false,
   });
 }

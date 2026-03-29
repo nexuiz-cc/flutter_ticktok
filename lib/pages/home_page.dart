@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/pages/placeholder_page.dart';
 import 'package:flutter_application/pages/video_page.dart';
-import '../data/mock_videos.dart';
-import '../widgets/video_item.dart';
 import 'friend_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,11 +14,11 @@ class _HomePageState extends State<HomePage> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   final List<Widget> _pages = [
-    const VideoPage(), // 视频页
-    const FriendPage(), // 朋友页
-    const PlaceholderPage(), // 占位页
-    const PlaceholderPage(), // 占位页
-    const PlaceholderPage(), // 占位页
+    const VideoPage(), 
+    const FriendPage(), 
+    const PlaceholderPage(text: '拍摄'),
+    const PlaceholderPage(text: '消息'),
+    const PlaceholderPage(text: '我'),
   ];
 
   @override
@@ -101,7 +99,7 @@ class _HomePageState extends State<HomePage> {
 
     return GestureDetector(
       onTap: () {
-        _pageController.jumpToPage(index); // 
+        _pageController.jumpToPage(index); //
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
