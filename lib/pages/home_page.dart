@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/pages/placeholder_page.dart';
 import 'package:flutter_application/pages/video_page.dart';
+import 'package:flutter_application/pages/profile_page.dart';
 import 'friend_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,11 +15,11 @@ class _HomePageState extends State<HomePage> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   final List<Widget> _pages = [
-    const VideoPage(), 
-    const FriendPage(), 
+    const VideoPage(),
+    const FriendPage(),
     const PlaceholderPage(text: '拍摄'),
     const PlaceholderPage(text: '消息'),
-    const PlaceholderPage(text: '我'),
+    const ProfilePage(),
   ];
 
   @override
