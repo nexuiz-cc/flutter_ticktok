@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/pages/placeholder_page.dart';
+import 'package:flutter_application/pages/video_page.dart';
 import '../data/mock_videos.dart';
 import '../widgets/video_item.dart';
+import 'friend_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,6 +15,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
+  final List<Widget> _pages = [
+    const VideoPage(), // 视频页
+    const FriendPage(), // 朋友页
+    const PlaceholderPage(), // 占位页
+    const PlaceholderPage(), // 占位页
+    const PlaceholderPage(), // 占位页
+  ];
 
   @override
   void dispose() {
@@ -26,42 +36,20 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
-        title: const Text(
-          '抖音',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.menu, color: Colors.white),
           onPressed: () {},
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search, color: Colors.white),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.message, color: Colors.white),
-            onPressed: () {},
-          ),
-        ],
       ),
-      body: PageView.builder(
+      body: PageView(
         controller: _pageController,
-        scrollDirection: Axis.vertical,
-        itemCount: mockVideos.length,
         onPageChanged: (index) {
           setState(() {
             _currentPage = index;
           });
         },
-        itemBuilder: (context, index) {
-          return VideoItem(video: mockVideos[index]);
-        },
+        children: _pages,
       ),
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
@@ -88,10 +76,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, int index,
-      {bool isCenter = false}) {
+  Widget _buildNavItem(
+    IconData icon,
+    String label,
+    int index, {
+    bool isCenter = false,
+  }) {
     final isActive = _currentPage == index;
-    
+
     if (isCenter) {
       return Container(
         width: 60,
@@ -107,23 +99,24 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          icon,
-          color: isActive ? Colors.white : Colors.grey,
-          size: 24,
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            color: isActive ? Colors.white : Colors.grey,
-            fontSize: 10,
+    return GestureDetector(
+      onTap: () {
+        _pageController.jumpToPage(index); // 
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: isActive ? Colors.white : Colors.grey, size: 24),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              color: isActive ? Colors.white : Colors.grey,
+              fontSize: 10,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
