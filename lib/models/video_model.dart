@@ -6,7 +6,8 @@ class VideoModel {
   final String authorName;
   final String authorAvatar;
   final String description;
-   int likeCount;
+  final List<String> keywords;
+  int likeCount;
   final int commentCount;
   final int collectCount;
   final int shareCount;
@@ -21,6 +22,7 @@ class VideoModel {
     required this.authorName,
     required this.authorAvatar,
     required this.description,
+    required this.keywords,
     this.likeCount = 0,
     this.commentCount = 0,
     this.collectCount = 0,

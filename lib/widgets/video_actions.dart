@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../common/funny_colors.dart';
 
 class VideoActions extends StatelessWidget {
   final int likeCount;
@@ -33,42 +34,42 @@ class VideoActions extends StatelessWidget {
               const SnackBar(content: Text('关注功能开发中')),
             );
           },
-          color: Colors.red,
+          color: FunnyColors.red,
         ),
         const SizedBox(height: 8),
         _buildActionButton(
           icon: isLiked ? Icons.favorite : Icons.favorite_border,
           label: _formatCount(likeCount),
           onTap: onLike,
-          color: isLiked ? Colors.red : Colors.white,
+          color: isLiked ? FunnyColors.red : FunnyColors.white,
         ),
         const SizedBox(height: 8),
         _buildActionButton(
           icon: Icons.chat_bubble_outline,
           label: '评论',
           onTap: onComment,
-          color: Colors.white,
+          color: FunnyColors.white,
         ),
         const SizedBox(height: 8),
         _buildActionButton(
           icon: Icons.star_border,
           label: '收藏',
           onTap: onCollect,
-          color: Colors.white,
+          color: FunnyColors.white,
         ),
         const SizedBox(height: 8),
         _buildActionButton(
           icon: Icons.share,
           label: '分享',
           onTap: onShare,
-          color: Colors.white,
+          color: FunnyColors.white,
         ),
         const SizedBox(height: 20),
         _buildActionButton(
           icon: Icons.music_note,
           label: '音乐',
           onTap: onMusic,
-          color: Colors.yellow,
+          color: FunnyColors.bananaYellow,
         ),
       ],
     );

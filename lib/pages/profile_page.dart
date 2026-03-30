@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../common/funny_colors.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -6,7 +7,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: FunnyColors.white,
       body: SafeArea(
         child: Column(
           children: [
@@ -46,7 +47,7 @@ class ProfileHeader extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 36,
-                backgroundColor: Colors.grey[300],
+                backgroundColor: FunnyColors.grey,
                 backgroundImage: NetworkImage(
                   'https://randomuser.me/api/portraits/men/32.jpg',
                 ),
@@ -62,19 +63,19 @@ class ProfileHeader extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: FunnyColors.white,
                       ),
                     ),
                     SizedBox(height: 4),
                     Text(
                       '抖音号: dyuembzjff9p',
-                      style: TextStyle(fontSize: 14, color: Colors.white70),
+                      style: TextStyle(fontSize: 14, color: FunnyColors.white70),
                     ),
                   ],
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.person_add_alt_1, color: Colors.white),
+                icon: const Icon(Icons.person_add_alt_1, color: FunnyColors.white),
                 onPressed: () {},
               ),
             ],
@@ -90,7 +91,7 @@ class ProfileStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: FunnyColors.white,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -117,8 +118,8 @@ class ProfileStats extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                foregroundColor: Colors.black,
-                backgroundColor: Colors.white,
+                foregroundColor: FunnyColors.black,
+                backgroundColor: FunnyColors.white,
                 textStyle: const TextStyle(fontSize: 14),
               ),
               onPressed: () {},
@@ -147,13 +148,13 @@ class _StatItem extends StatelessWidget {
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18,
-              color: Colors.black,
+              color: FunnyColors.black,
             ),
           ),
           const SizedBox(height: 2),
           Text(
             label,
-            style: const TextStyle(fontSize: 13, color: Colors.black54),
+            style: const TextStyle(fontSize: 13, color: FunnyColors.black54),
           ),
         ],
       ),
@@ -172,10 +173,10 @@ class ProfileBio extends StatelessWidget {
           Expanded(
             child: Text(
               '点击添加介绍，让大家认识你...',
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: FunnyColors.black),
             ),
           ),
-          Icon(Icons.edit, size: 18, color: Colors.black),
+          Icon(Icons.edit, size: 18, color: FunnyColors.black),
         ],
       ),
     );
@@ -210,9 +211,9 @@ class _ActionIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Icon(icon, size: 28, color: Colors.black87),
+        Icon(icon, size: 28, color: FunnyColors.black87),
         const SizedBox(height: 4),
-        Text(label, style: const TextStyle(fontSize: 12, color: Colors.black)),
+        Text(label, style: const TextStyle(fontSize: 12, color: FunnyColors.black)),
       ],
     );
   }
@@ -231,15 +232,15 @@ class ProfileTabs extends StatelessWidget {
             children: [
               FractionallySizedBox(
                 widthFactor: 0.9,
-                child: Container(height: 1, color: Colors.grey),
+                child: Container(height: 1, color: FunnyColors.grey),
               ),
               Theme(
                 data: Theme.of(context).copyWith(
                   tabBarTheme: Theme.of(context).tabBarTheme.copyWith(dividerColor: Colors.transparent),
                 ),
                 child: TabBar(
-                  labelColor: Colors.black,
-                  unselectedLabelColor: Colors.grey,
+                  labelColor: FunnyColors.black,
+                  unselectedLabelColor: FunnyColors.grey,
                   indicator: const _CustomTabIndicator(),
                   indicatorColor: Colors.transparent, // 禁用TabBar自带下划线
                   indicatorWeight: 0, // 禁用TabBar自带下划线
@@ -289,7 +290,7 @@ class _CustomTabIndicatorPainter extends BoxPainter {
     final double endX = startX + 40;
     final double y = offset.dy + height - indicatorHeight +0.5;
     final Paint paint = Paint()
-      ..color = Colors.black
+      ..color = FunnyColors.black
       ..strokeWidth = indicatorHeight
       ..strokeCap = StrokeCap.round;
     canvas.drawLine(
@@ -319,9 +320,9 @@ class VideoGrid extends StatelessWidget {
         return Stack(
           children: [
             Container(
-              color: Colors.grey[300],
+              color: FunnyColors.grey,
               child: const Center(
-                child: Icon(Icons.play_arrow, size: 40, color: Colors.white),
+                child: Icon(Icons.play_arrow, size: 40, color: FunnyColors.white),
               ),
             ),
             Positioned(
@@ -329,11 +330,11 @@ class VideoGrid extends StatelessWidget {
               bottom: 4,
               child: Row(
                 children: const [
-                  Icon(Icons.play_arrow, size: 14, color: Colors.white),
+                  Icon(Icons.play_arrow, size: 14, color: FunnyColors.white),
                   SizedBox(width: 2),
                   Text(
                     '51',
-                    style: TextStyle(color: Colors.white, fontSize: 12),
+                    style: TextStyle(color: FunnyColors.white, fontSize: 12),
                   ),
                 ],
               ),

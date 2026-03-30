@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/common/funny_colors.dart';
 import 'package:flutter_application/pages/placeholder_page.dart';
 import 'package:flutter_application/pages/video_page.dart';
 import 'package:flutter_application/pages/profile_page.dart';
@@ -31,16 +32,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.white),
-          onPressed: () {},
-        ),
-      ),
+      backgroundColor: FunnyColors.black,
+      extendBodyBehindAppBar: true,
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) {
@@ -88,11 +81,11 @@ class _HomePageState extends State<HomePage> {
         width: 60,
         height: 60,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: FunnyColors.white,
           borderRadius: BorderRadius.circular(30),
         ),
         child: IconButton(
-          icon: Icon(icon, color: Colors.black, size: 30),
+          icon: Icon(icon, color: FunnyColors.black, size: 30),
           onPressed: () {},
         ),
       );
@@ -105,12 +98,16 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: isActive ? Colors.white : Colors.grey, size: 24),
+          Icon(
+            icon,
+            color: isActive ? FunnyColors.white : FunnyColors.grey,
+            size: 24,
+          ),
           const SizedBox(height: 4),
           Text(
             label,
             style: TextStyle(
-              color: isActive ? Colors.white : Colors.grey,
+              color: isActive ? FunnyColors.white : FunnyColors.grey,
               fontSize: 10,
             ),
           ),

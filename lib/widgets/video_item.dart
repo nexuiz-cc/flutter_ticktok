@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application/common/funny_colors.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 import '../models/video_model.dart';
@@ -25,8 +26,12 @@ class VideoItem extends StatefulWidget {
   State<VideoItem> createState() => _VideoItemState();
 }
 
-class _VideoItemState extends State<VideoItem>
-    with SingleTickerProviderStateMixin {
+class _VideoItemState extends State<VideoItem> with SingleTickerProviderStateMixin {
+  // 可拖拽Tab标签
+  List<String> _tabs = [
+    '经验', '精选', '热点', '同城', '关注', '直播', '商城', '推荐'
+  ];
+  int _selectedTab = 0;
   late VideoPlayerController _videoController;
   ChewieController? _chewieController;
   bool _isLiked = false;
@@ -96,10 +101,10 @@ class _VideoItemState extends State<VideoItem>
           ),
         ),
         materialProgressColors: ChewieProgressColors(
-          playedColor: Colors.red,
+          playedColor: FunnyColors.watermelonRed,
           handleColor: Colors.red,
-          backgroundColor: Colors.grey,
-          bufferedColor: Colors.grey,
+          backgroundColor: FunnyColors.grey,
+          bufferedColor: FunnyColors.grey,
         ),
       );
 
@@ -195,70 +200,167 @@ class _VideoItemState extends State<VideoItem>
 
   @override
   Widget build(BuildContext context) {
-    if (_hasError) {
-      return _ErrorView(errorMessage: _errorMessage, onRetry: _retryLoadVideo);
-    }
+      if (_hasError) {
+    return _ErrorView(errorMessage: _errorMessage, onRetry: _retryLoadVideo);
+  }
 
-    if (_isLoading || _chewieController == null) {
-      return const _LoadingView();
-    }
+  if (_isLoading || _chewieController == null) {
+    return const _LoadingView();
+  }
 
-    return GestureDetector(
-      onDoubleTap: _handleDoubleTap,
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            Positioned(
-              top: -20,
-              left: 0,
-              right: 0,
-              bottom: 20,
-              child: Chewie(controller: _chewieController!),
+  return GestureDetector(
+    onDoubleTap: _handleDoubleTap,
+    child: Scaffold(
+      backgroundColor: FunnyColors.black,
+      body: Column(
+        children: [
+          // 顶部 tabs 行，紧贴屏幕顶部
+          Container(
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 8),
+            color: FunnyColors.black,
+            height: 48 + MediaQuery.of(context).padding.top + 8,
+            child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: Icon(Icons.menu, color: FunnyColors.white, size: 28),
+                  ),
+                  Expanded(
+                    child: ReorderableListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      buildDefaultDragHandles: true,
+                      padding: EdgeInsets.zero,
+                      itemCount: _tabs.length,
+                      onReorder: (oldIndex, newIndex) {
+                        setState(() {
+                          if (oldIndex < newIndex) newIndex--;
+                          final item = _tabs.removeAt(oldIndex);
+                          _tabs.insert(newIndex, item);
+                          if (_selectedTab == oldIndex) {
+                            _selectedTab = newIndex;
+                          } else if (_selectedTab == newIndex) {
+                            _selectedTab = oldIndex;
+                          }
+                        });
+                      },
+                      itemBuilder: (context, index) {
+                        final selected = index == _selectedTab;
+                        return Padding(
+                          key: ValueKey(_tabs[index]),
+                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _selectedTab = index;
+                              });
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: FunnyColors.black,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Text(
+                                _tabs[index],
+                                style: TextStyle(
+                                  color: selected ? FunnyColors.white : FunnyColors.grey,
+                                  fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
             ),
+          ),
 
-            // 双击爱心动画
-            if (_showLikeAnimation)
-              Positioned.fill(
-                child: Center(
-                  child: FadeTransition(
-                    opacity: _opacityAnimation,
-                    child: ScaleTransition(
-                      scale: _scaleAnimation,
-                      child: const Icon(
-                        Icons.favorite,
-                        color: Colors.red,
-                        size: 100,
+          // 内容区（视频或占位）+ 浮动层
+          Expanded(
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                // 视频或开发中占位
+                _selectedTab == 0
+                    ? Chewie(controller: _chewieController!)
+                    : const Center(
+                        child: Text(
+                          '开发中',
+                          style: TextStyle(
+                            color: FunnyColors.unicornWhite,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+
+                // 全屏按钮（仅经验tab显示）
+                if (_selectedTab == 0)
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 200,
+                    child: Center(
+                      child: OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: FunnyColors.ironGrey,
+                          foregroundColor: FunnyColors.white,
+                          side: const BorderSide(color: FunnyColors.grey, width: 2),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 0),
+                        ),
+                        icon: const Icon(Icons.fullscreen, color: FunnyColors.white),
+                        label: const Text('全屏观看', style: TextStyle(color: FunnyColors.white, fontSize: 12.0)),
+                        onPressed: () {
+                          _chewieController?.enterFullScreen();
+                        },
                       ),
                     ),
                   ),
-                ),
-              ),
 
-            // 顶部标题
-            Positioned(
-              top: 60,
-              left: 16,
-              right: 16,
-              child: _VideoTitle(title: widget.video.title),
-            ),
+                // 双击爱心动画
+                if (_showLikeAnimation)
+                  Positioned.fill(
+                    child: Center(
+                      child: FadeTransition(
+                        opacity: _opacityAnimation,
+                        child: ScaleTransition(
+                          scale: _scaleAnimation,
+                          child: const Icon(
+                            Icons.favorite,
+                            color: FunnyColors.red,
+                            size: 100,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
 
-            // 底部信息区
-            Positioned(
-              left: 16,
-              right: 16,
-              bottom: 16,
-              child: _VideoBottomInfo(
-                authorName: widget.video.authorName,
-                description: widget.video.description,
-                recommendCount: widget.video.recommendCount,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+                // 底部信息区（仅经验tab显示）
+                if (_selectedTab == 0)
+                  Positioned(
+                    left: 16,
+                    right: 16,
+                    bottom: 16,
+                    child: _VideoBottomInfo(
+                      authorName: widget.video.authorName,
+                      description: widget.video.description,
+                      recommendCount: widget.video.recommendCount,
+                      keywords: widget.video.keywords,
+                    ),
+                  ),
+              ],        // Stack children
+            ),          // Stack
+          ),            // Expanded
+        ],              // Column children
+      ),                // Column
+    ),                  // Scaffold
+  );                    // GestureDetector
   }
 
 }
@@ -294,10 +396,12 @@ class _VideoBottomInfo extends StatelessWidget {
   final String authorName;
   final String description;
   final int recommendCount;
+  final List<String> keywords;
   const _VideoBottomInfo({
     required this.authorName,
     required this.description,
     required this.recommendCount,
+    required this.keywords,
   });
 
   @override
@@ -306,9 +410,22 @@ class _VideoBottomInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '@$authorName · $description',
-          style: const TextStyle(color: Colors.white, fontSize: 16),
-          maxLines: 2,
+          '@$authorName',
+          style: const TextStyle(color: FunnyColors.unicornWhite, fontSize: 16),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        if (keywords.isNotEmpty)
+          Text(
+            keywords.map((k) => '#$k').join(' '),
+            style: const TextStyle(color: FunnyColors.skyBlue, fontSize: 14),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        Text(
+          description,
+          style: const TextStyle(color: FunnyColors.unicornWhite, fontSize: 16),
+          maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
         const SizedBox(height: 12),
@@ -320,25 +437,8 @@ class _VideoBottomInfo extends StatelessWidget {
                 vertical: 6,
               ),
               decoration: BoxDecoration(
-                color: Colors.black54,
+                color: FunnyColors.black.withOpacity(0.7),
                 borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.thumb_up,
-                    size: 16,
-                    color: Colors.white,
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    '共$recommendCount人推荐',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
               ),
             ),
           ],
@@ -355,8 +455,8 @@ class _LoadingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(child: CircularProgressIndicator(color: Colors.white)),
+      backgroundColor: FunnyColors.pandaBlack,
+      body: Center(child: CircularProgressIndicator(color: FunnyColors.unicornWhite)),
     );
   }
 }
@@ -370,29 +470,29 @@ class _ErrorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: FunnyColors.pandaBlack,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error_outline, color: Colors.white, size: 60),
+            const Icon(Icons.error_outline, color: FunnyColors.unicornWhite, size: 60),
             const SizedBox(height: 20),
             const Text(
               '视频加载失败',
-              style: TextStyle(color: Colors.white, fontSize: 18),
+              style: TextStyle(color: FunnyColors.unicornWhite, fontSize: 18),
             ),
             const SizedBox(height: 10),
             Text(
               errorMessage,
-              style: const TextStyle(color: Colors.grey, fontSize: 14),
+              style: const TextStyle(color: FunnyColors.ghostGrey, fontSize: 14),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: onRetry,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
+                backgroundColor: FunnyColors.tomatoSauce,
+                foregroundColor: FunnyColors.unicornWhite,
                 padding: EdgeInsets.symmetric(
                   horizontal: 30,
                   vertical: 12,

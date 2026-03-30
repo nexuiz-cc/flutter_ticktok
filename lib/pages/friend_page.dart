@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../common/funny_colors.dart';
 
 class FriendPage extends StatelessWidget {
   const FriendPage({super.key});
@@ -6,12 +7,12 @@ class FriendPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: FunnyColors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: FunnyColors.black,
         title: const Text(
           '朋友',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: FunnyColors.white),
         ),
         centerTitle: true,
         elevation: 0,
@@ -19,7 +20,7 @@ class FriendPage extends StatelessWidget {
       body: const Center(
         child: Text(
           '朋友页面',
-          style: TextStyle(color: Colors.white, fontSize: 24),
+          style: TextStyle(color: FunnyColors.white, fontSize: 24),
         ),
       ),
     );
