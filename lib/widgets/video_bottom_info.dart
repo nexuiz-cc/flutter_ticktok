@@ -1,0 +1,60 @@
+// 底部信息区
+import 'package:flutter/material.dart';
+import '../common/funny_colors.dart';
+
+class VideoBottomInfo extends StatelessWidget {
+  final String authorName;
+  final String description;
+  final int recommendCount;
+  final List<String> keywords;
+  const VideoBottomInfo({
+    super.key,
+    required this.authorName,
+    required this.description,
+    required this.recommendCount,
+    required this.keywords,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '@$authorName',
+          style: const TextStyle(color: FunnyColors.unicornWhite, fontSize: 16),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        if (keywords.isNotEmpty)
+          Text(
+            keywords.map((k) => '#$k').join(' '),
+            style: const TextStyle(color: FunnyColors.skyBlue, fontSize: 14),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        Text(
+          description,
+          style: const TextStyle(color: FunnyColors.unicornWhite, fontSize: 16),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 1,
+              ),
+              decoration: BoxDecoration(
+                color: FunnyColors.black.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}

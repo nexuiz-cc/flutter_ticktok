@@ -62,10 +62,11 @@ class _VideoPageState extends State<VideoPage> {
             },
           ),
 
-          // 固定在屏幕右侧的按钮
+          // 固定在屏幕右侧的按钮，从屏幕中央延伸到右下角
           Positioned(
             right: 16,
-            top: MediaQuery.of(context).size.height * 0.39,
+            top: MediaQuery.of(context).size.height * 0.48,
+            bottom: 10,
             child: VideoActions(
               likeCount: currentState.likeCount,
               isLiked: currentState.isLiked,

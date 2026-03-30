@@ -24,7 +24,7 @@ class VideoActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildActionButton(
           icon: Icons.person_add,
