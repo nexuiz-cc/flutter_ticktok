@@ -50,6 +50,8 @@ class _VideoPageState extends State<VideoPage> {
             onPageChanged: (index) {
               setState(() {
                 _currentIndex = index;
+                _showingComments = false;
+                _commentsFullscreen = false;
               });
             },
             itemBuilder: (context, index) {

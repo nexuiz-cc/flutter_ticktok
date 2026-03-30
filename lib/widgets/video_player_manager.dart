@@ -11,6 +11,7 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
   bool _isLoading = true;
   bool _hasError = false;
   String _errorMessage = '';
+  bool _desiredPlay = false; // 记录期望的播放状态
 
   VideoPlayerController get videoController => _videoController;
   ChewieController? get chewieController => _chewieController;
@@ -24,6 +25,7 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
 
   Future<void> _initVideoPlayer(VideoModel video, bool isPaused) async {
     try {
+      _desiredPlay = !isPaused;
       _isLoading = true;
       _hasError = false;
       if (mounted) setState(() {});
@@ -44,7 +46,7 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
 
       _chewieController = ChewieController(
         videoPlayerController: _videoController,
-        autoPlay: !isPaused,
+        autoPlay: _desiredPlay,
         looping: true,
         showControls: false,
         aspectRatio: _videoController.value.aspectRatio,
@@ -78,6 +80,7 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
   }
 
   void updateVideoPlayback(bool isPaused) {
+    _desiredPlay = !isPaused;
     if (_videoController.value.isInitialized) {
       if (isPaused) {
         _videoController.pause();
@@ -85,6 +88,7 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
         _videoController.play();
       }
     }
+    // 若尚未初始化完成，_desiredPlay 会在初始化结束时通过 autoPlay 生效
   }
 
   void updateVideoSource(VideoModel newVideo) {
