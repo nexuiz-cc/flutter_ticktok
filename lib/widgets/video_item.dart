@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 import 'package:flutter_application/common/funny_colors.dart';
 import 'package:chewie/chewie.dart';
 import '../models/video_model.dart';
@@ -16,6 +17,7 @@ class VideoItem extends StatefulWidget {
   final bool isLiked;
   final int currentLikeCount;
   final VoidCallback? onDoubleTap;
+  final bool showComments;
 
   const VideoItem({
     super.key,
@@ -24,6 +26,7 @@ class VideoItem extends StatefulWidget {
     this.isLiked = false,
     this.currentLikeCount = 0,
     this.onDoubleTap,
+    this.showComments = false,
   });
 
   @override
@@ -85,26 +88,68 @@ class _VideoItemState extends State<VideoItem>
       child: Scaffold(
         backgroundColor: FunnyColors.black,
         extendBodyBehindAppBar: true,
-        body: Stack(
-          children: [
-            // 内容区（视频或占位），铺满全屏
-            Positioned.fill(
-              child: selectedTab == 0
-                  ? Chewie(controller: chewieController!)
-                  : const Center(
-                      child: Text(
-                        '开发中',
-                        style: TextStyle(
-                          color: FunnyColors.unicornWhite,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+        body: LayoutBuilder(builder: (context, constraints) {
+          final double screenWidth = constraints.maxWidth;
+          final double screenHeight = constraints.maxHeight;
+          final double statusBarHeight = MediaQuery.of(context).padding.top;
+          final double tabsBottom = statusBarHeight + 8 + 48 + 8;
+          final double videoAspectRatio = videoController.value.aspectRatio > 0
+              ? videoController.value.aspectRatio
+              : 16.0 / 9.0;
+          final double videoPreviewWidth = screenWidth * 0.6;
+          final double videoPreviewHeight = min(
+            videoPreviewWidth / videoAspectRatio,
+            screenHeight * 0.35,
+          );
+          final double videoPreviewLeft = screenWidth * 0.2;
+          final double videoPreviewTop = tabsBottom;
+          // ignore: unused_local_variable
+
+          return Stack(
+            children: [
+            // 内容区
+            if (!widget.showComments)
+              Positioned.fill(
+                child: selectedTab == 0
+                    ? Chewie(controller: chewieController!)
+                    : const Center(
+                        child: Text(
+                          '开发中',
+                          style: TextStyle(
+                            color: FunnyColors.unicornWhite,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-            ),
+              )
+            else
+              Positioned(
+                top: videoPreviewTop,
+                left: videoPreviewLeft,
+                width: videoPreviewWidth,
+                height: videoPreviewHeight,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Stack(
+                    children: [
+                      Chewie(controller: chewieController!),
+                      // 灰色遮罩
+                      Positioned.fill(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.45),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
 
-            // 全屏按钮（仅经验tab显示）
-            if (selectedTab == 0)
+            // 全屏按钮（仅经验tab显示，评论时隐藏）
+            if (selectedTab == 0 && !widget.showComments)
               Positioned(
                 left: 0,
                 right: 0,
@@ -147,8 +192,8 @@ class _VideoItemState extends State<VideoItem>
                 ),
               ),
 
-            // 底部信息区（仅经验tab显示）
-            if (selectedTab == 0)
+            // 底部信息区（仅经验tab显示，评论时隐藏）
+            if (selectedTab == 0 && !widget.showComments)
               Positioned(
                 left: 16,
                 right: 16,
@@ -213,8 +258,9 @@ class _VideoItemState extends State<VideoItem>
                 ),
               ),
             ),
-          ],
-        ),
+            ],
+          );
+        }),
       ),
     );
   }
