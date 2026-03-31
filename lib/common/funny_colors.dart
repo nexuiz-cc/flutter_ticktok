@@ -31,4 +31,5 @@ class FunnyColors {
   static const Color goldCoin = Color(0xFFFFD700); // 金币黄
   static const Color ghostGrey = Color(0xFFB0BEC5); // 鬼魂灰
   static const Color chocolate = Color(0xFF8B4513); // 巧克力色
+  static const Color darkgrey = Color.fromARGB(255, 40, 40, 40);
 }

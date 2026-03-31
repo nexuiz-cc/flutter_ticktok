@@ -1,0 +1,22 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "确保模拟器已启动 (Pixel_9_Pro)",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "$adb = \"$env:LOCALAPPDATA\\Android\\Sdk\\platform-tools\\adb.exe\"; $emu = \"$env:LOCALAPPDATA\\Android\\Sdk\\emulator\\emulator.exe\"; $running = & $adb devices | Select-String 'emulator'; if (-not $running) { Write-Host '[1/3] 正在启动模拟器 Pixel_9_Pro ...'; Start-Process $emu -ArgumentList '-avd Pixel_9_Pro'; Write-Host '[2/3] 等待设备上线...'; & $adb wait-for-device; $boot = ''; while ($boot -ne '1') { Start-Sleep -Seconds 3; $boot = (& $adb shell getprop sys.boot_completed 2>$null).Trim() }; Write-Host '[3/3] 模拟器已就绪！' } else { Write-Host '模拟器已在运行，跳过启动。' }"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}

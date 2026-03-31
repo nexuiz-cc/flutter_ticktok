@@ -3,6 +3,7 @@ import 'package:flutter_application/common/funny_colors.dart';
 import 'package:flutter_application/pages/placeholder_page.dart';
 import 'package:flutter_application/pages/video_page.dart';
 import 'package:flutter_application/pages/profile_page.dart';
+import 'package:flutter_application/pages/message_page.dart';
 import 'friend_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +20,7 @@ class _HomePageState extends State<HomePage> {
     const VideoPage(),
     const FriendPage(),
     const PlaceholderPage(text: '拍摄'),
-    const PlaceholderPage(text: '消息'),
+    const MessagePage(),
     const ProfilePage(),
   ];
 
@@ -49,7 +50,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildBottomNavigationBar() {
     return Container(
-      color: Colors.black,
+      color: FunnyColors.darkgrey,
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
@@ -77,16 +78,19 @@ class _HomePageState extends State<HomePage> {
     final isActive = _currentPage == index;
 
     if (isCenter) {
-      return Container(
-        width: 60,
-        height: 60,
-        decoration: BoxDecoration(
-          color: FunnyColors.white,
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: IconButton(
-          icon: Icon(icon, color: FunnyColors.black, size: 30),
-          onPressed: () {},
+      return GestureDetector(
+        onTap: () {},
+        child: Container(
+          width: 50,
+          height: 34,
+          decoration: BoxDecoration(
+            color: FunnyColors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: FunnyColors.white, width: 1.5),
+          ),
+          child: const Center(
+            child: Icon(Icons.add, color: FunnyColors.black, size: 26),
+          ),
         ),
       );
     }
@@ -95,23 +99,16 @@ class _HomePageState extends State<HomePage> {
       onTap: () {
         _pageController.jumpToPage(index); //
       },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: Text(
+          label,
+          style: TextStyle(
             color: isActive ? FunnyColors.white : FunnyColors.grey,
-            size: 24,
+            fontSize: 14,
+            fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
           ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              color: isActive ? FunnyColors.white : FunnyColors.grey,
-              fontSize: 10,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

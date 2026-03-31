@@ -77,6 +77,8 @@ class _VideoPageState extends State<VideoPage> {
             child: VideoActions(
               likeCount: currentState.likeCount,
               isLiked: currentState.isLiked,
+              authorName: currentVideo.authorName,
+              authorAvatar: currentVideo.authorAvatar,
               onLike: () => _toggleLike(currentVideo.id),
               onComment: () => setState(() => _showingComments = true),
               onCollect: () {

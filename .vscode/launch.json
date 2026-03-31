@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Flutter (调试模式)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "flutterMode": "debug",
+      "preLaunchTask": "确保模拟器已启动 (Pixel_9_Pro)"
+    },
+    {
+      "name": "Flutter (发布模式)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "flutterMode": "release",
+      "preLaunchTask": "确保模拟器已启动 (Pixel_9_Pro)"
+    },
+    {
+      "name": "Flutter (性能分析模式)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "flutterMode": "profile",
+      "preLaunchTask": "确保模拟器已启动 (Pixel_9_Pro)"
+    }
+  ]
+}
