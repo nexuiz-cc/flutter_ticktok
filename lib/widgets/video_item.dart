@@ -103,11 +103,9 @@ class _VideoItemState extends State<VideoItem>
           );
           final double videoPreviewLeft = screenWidth * 0.2;
           final double videoPreviewTop = tabsBottom;
-          // ignore: unused_local_variable
 
           return Stack(
             children: [
-            // 内容区
             if (!widget.showComments)
               Positioned.fill(
                 child: selectedTab == 0
@@ -134,7 +132,6 @@ class _VideoItemState extends State<VideoItem>
                   child: Stack(
                     children: [
                       Chewie(controller: chewieController!),
-                      // 灰色遮罩
                       Positioned.fill(
                         child: Container(
                           decoration: BoxDecoration(
@@ -148,7 +145,6 @@ class _VideoItemState extends State<VideoItem>
                 ),
               ),
 
-            // 全屏按钮（仅经验tab显示，评论时隐藏）
             if (selectedTab == 0 && !widget.showComments)
               Positioned(
                 left: 0,
@@ -174,7 +170,6 @@ class _VideoItemState extends State<VideoItem>
                 ),
               ),
 
-            // 双击爱心动画
             if (showLikeAnimation)
               Positioned.fill(
                 child: Center(
@@ -192,7 +187,6 @@ class _VideoItemState extends State<VideoItem>
                 ),
               ),
 
-            // 底部信息区（仅经验tab显示，评论时隐藏）
             if (selectedTab == 0 && !widget.showComments)
               Positioned(
                 left: 16,
@@ -206,7 +200,6 @@ class _VideoItemState extends State<VideoItem>
                 ),
               ),
 
-            // 顶部 tabs 栏，叠在视频上方
             Positioned(
               top: 0,
               left: 0,

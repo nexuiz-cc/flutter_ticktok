@@ -46,7 +46,6 @@ class _VideoActionsState extends State<VideoActions> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // 作者头像 + 关注按钮
         GestureDetector(
           onTap: () => setState(() => _isFollowing = !_isFollowing),
           child: SizedBox(
@@ -69,7 +68,7 @@ class _VideoActionsState extends State<VideoActions> {
                             width: 48,
                             height: 48,
                             fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) => _buildFallbackAvatar(),
+                            errorBuilder: (_, _, _) => _buildFallbackAvatar(),
                           )
                         : _buildFallbackAvatar(),
                   ),
@@ -134,7 +133,6 @@ class _VideoActionsState extends State<VideoActions> {
     );
   }
 
-  // ignore: non_constant_identifier_names
   Widget _buildFallbackAvatar() {
     return Container(
       width: 48,

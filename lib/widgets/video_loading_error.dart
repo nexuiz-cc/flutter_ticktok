@@ -1,8 +1,6 @@
-// 加载和错误视图
 import 'package:flutter/material.dart';
 import '../common/funny_colors.dart';
 
-// 加载视图
 class VideoLoadingView extends StatelessWidget {
   const VideoLoadingView({super.key});
 
@@ -15,7 +13,6 @@ class VideoLoadingView extends StatelessWidget {
   }
 }
 
-// 错误视图
 class VideoErrorView extends StatelessWidget {
   final String errorMessage;
   final VoidCallback onRetry;

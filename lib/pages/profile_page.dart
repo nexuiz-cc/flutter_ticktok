@@ -29,7 +29,6 @@ class ProfileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // 顶部渐变背景
         Container(
           height: 120,
           width: double.infinity,
@@ -96,7 +95,6 @@ class ProfileStats extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // 统计数字靠左
           Row(
             children: const [
               _StatItem(label: '获赞', value: '69'),
@@ -242,8 +240,8 @@ class ProfileTabs extends StatelessWidget {
                   labelColor: FunnyColors.black,
                   unselectedLabelColor: FunnyColors.grey,
                   indicator: const _CustomTabIndicator(),
-                  indicatorColor: Colors.transparent, // 禁用TabBar自带下划线
-                  indicatorWeight: 0, // 禁用TabBar自带下划线
+                  indicatorColor: Colors.transparent,
+                  indicatorWeight: 0,
                   tabs: const [
                     Tab(text: '作品'),
                     Tab(text: '日常'),
@@ -306,7 +304,6 @@ class VideoGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 示例视频缩略图
     return GridView.builder(
       padding: const EdgeInsets.all(8),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -315,7 +312,7 @@ class VideoGrid extends StatelessWidget {
         mainAxisSpacing: 6,
         childAspectRatio: 9 / 16,
       ),
-      itemCount: 6, // 示例数量
+      itemCount: 6,
       itemBuilder: (context, index) {
         return Stack(
           children: [

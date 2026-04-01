@@ -267,7 +267,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                   ),
                   ValueListenableBuilder<TextEditingValue>(
                     valueListenable: _inputController,
-                    builder: (_, value, __) {
+                    builder: (_, value, _) {
                       final hasText = value.text.trim().isNotEmpty;
                       return GestureDetector(
                         onTap: hasText ? _sendMessage : _toggleMorePanel,
@@ -317,7 +317,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             ? Image.network(
                 widget.message.avatarUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => _fallbackAvatar(40),
+                errorBuilder: (_, _, _) => _fallbackAvatar(40),
               )
             : _fallbackAvatar(40),
       ),
@@ -369,7 +369,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                     ? Image.network(
                         widget.message.avatarUrl,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => _fallbackAvatar(36),
+                        errorBuilder: (_, _, _) => _fallbackAvatar(36),
                       )
                     : _fallbackAvatar(36),
               ),

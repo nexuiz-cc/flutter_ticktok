@@ -137,7 +137,7 @@ class MessagePage extends StatelessWidget {
                                 ? Image.network(
                                     story.avatarUrl,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (_, __, ___) => Container(
+                                    errorBuilder: (_, _, _) => Container(
                                       color: storyFallbackBg,
                                       child: Icon(Icons.person, color: storyIconColor, size: 28),
                                     ),
@@ -295,7 +295,7 @@ class MessagePage extends StatelessWidget {
                 width: 52,
                 height: 52,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => _fallbackAvatar(msg),
+                errorBuilder: (_, _, _) => _fallbackAvatar(msg),
               )
             : _fallbackAvatar(msg),
       ),

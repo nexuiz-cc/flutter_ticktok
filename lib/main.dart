@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '抖音仿制',
+      title: 'MyTicktok',
       theme: ThemeData.dark(),
       home: const HomePage(),
     );

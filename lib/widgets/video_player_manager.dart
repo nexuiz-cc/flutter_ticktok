@@ -1,4 +1,3 @@
-// 视频播放管理逻辑
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -11,7 +10,7 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
   bool _isLoading = true;
   bool _hasError = false;
   String _errorMessage = '';
-  bool _desiredPlay = false; // 记录期望的播放状态
+  bool _desiredPlay = false;
 
   VideoPlayerController get videoController => _videoController;
   ChewieController? get chewieController => _chewieController;
@@ -88,7 +87,6 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
         _videoController.play();
       }
     }
-    // 若尚未初始化完成，_desiredPlay 会在初始化结束时通过 autoPlay 生效
   }
 
   void updateVideoSource(VideoModel newVideo) {
