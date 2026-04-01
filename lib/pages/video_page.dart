@@ -1,10 +1,15 @@
-// lib/pages/video_page.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_application/common/funny_colors.dart';
+import 'package:flutter_application/common/video_search.dart';
 import 'package:flutter_application/data/mock_videos.dart';
+import 'package:flutter_application/models/video_model.dart';
 import 'package:flutter_application/widgets/video_item.dart';
 import 'package:flutter_application/widgets/video_actions.dart';
 import 'package:flutter_application/widgets/comment_bottom_sheet.dart';
 import 'package:flutter_application/models/video_state.dart';
+import 'package:flutter_application/pages/video_search_page.dart';
+
+// 縦スワイプの動画フィードと検索結果反映を管理する画面。
 
 class VideoPage extends StatefulWidget {
   const VideoPage({super.key});
@@ -19,12 +24,16 @@ class _VideoPageState extends State<VideoPage> {
   final Map<String, VideoState> _videoStates = {};
   bool _showingComments = false;
   bool _commentsFullscreen = false;
+  late final List<VideoModel> _allVideos;
+  late List<VideoModel> _visibleVideos;
+  String _activeQuery = '';
 
   @override
   void initState() {
     super.initState();
-    // 初始化视频状态
-    for (var video in mockVideos) {
+    _allVideos = List<VideoModel>.from(mockVideos);
+    _visibleVideos = List<VideoModel>.from(_allVideos);
+    for (var video in _allVideos) {
       _videoStates[video.id] = VideoState(
         isLiked: false,
         likeCount: video.likeCount,
@@ -34,7 +43,11 @@ class _VideoPageState extends State<VideoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final currentVideo = mockVideos[_currentIndex];
+    if (_visibleVideos.isEmpty) {
+      return _buildEmptySearchState();
+    }
+
+    final currentVideo = _visibleVideos[_currentIndex];
     final currentState = _videoStates[currentVideo.id]!;
 
     return Scaffold(
@@ -42,11 +55,10 @@ class _VideoPageState extends State<VideoPage> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // 视频列表
           PageView.builder(
             controller: _pageController,
             scrollDirection: Axis.vertical,
-            itemCount: mockVideos.length,
+            itemCount: _visibleVideos.length,
             onPageChanged: (index) {
               setState(() {
                 _currentIndex = index;
@@ -55,7 +67,7 @@ class _VideoPageState extends State<VideoPage> {
               });
             },
             itemBuilder: (context, index) {
-              final video = mockVideos[index];
+              final video = _visibleVideos[index];
               final state = _videoStates[video.id]!;
               return VideoItem(
                 video: video,
@@ -63,49 +75,50 @@ class _VideoPageState extends State<VideoPage> {
                 isLiked: state.isLiked,
                 currentLikeCount: state.likeCount,
                 onDoubleTap: () => _handleDoubleTap(video.id),
+                onSearchTap: _openSearch,
                 showComments: _showingComments && index == _currentIndex,
               );
             },
           ),
 
-          // 固定在屏幕右侧的按钮，评论展开时隐藏
           if (!_showingComments)
-          Positioned(
-            right: 16,
-            top: MediaQuery.of(context).size.height * 0.48,
-            bottom: 10,
-            child: VideoActions(
-              likeCount: currentState.likeCount,
-              isLiked: currentState.isLiked,
-              authorName: currentVideo.authorName,
-              authorAvatar: currentVideo.authorAvatar,
-              onLike: () => _toggleLike(currentVideo.id),
-              onComment: () => setState(() => _showingComments = true),
-              onCollect: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('收藏成功')),
-                );
-              },
-              onShare: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('分享功能开发中')),
-                );
-              },
-              onMusic: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('音乐功能开发中')),
-                );
-              },
+            Positioned(
+              right: 16,
+              bottom: 24,
+              child: VideoActions(
+                likeCount: currentState.likeCount,
+                isLiked: currentState.isLiked,
+                authorName: currentVideo.authorName,
+                authorAvatar: currentVideo.authorAvatar,
+                onLike: () => _toggleLike(currentVideo.id),
+                onComment: () => setState(() => _showingComments = true),
+                onCollect: () {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(const SnackBar(content: Text('開発中')));
+                },
+                onShare: () {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(const SnackBar(content: Text('開発中')));
+                },
+                onMusic: () {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(const SnackBar(content: Text('開発中')));
+                },
+              ),
             ),
-          ),
-          // 内嵌评论面板覆盖层
+
           if (_showingComments)
             Positioned(
               top: _commentsFullscreen
                   ? MediaQuery.of(context).padding.top
                   : () {
                       final size = MediaQuery.of(context).size;
-                      final statusBarHeight = MediaQuery.of(context).padding.top;
+                      final statusBarHeight = MediaQuery.of(
+                        context,
+                      ).padding.top;
                       final tabsHeight = statusBarHeight + 64.0;
                       final videoPreviewHeight = size.height * 0.35;
                       return tabsHeight + videoPreviewHeight - 170;
@@ -119,7 +132,8 @@ class _VideoPageState extends State<VideoPage> {
                   _showingComments = false;
                   _commentsFullscreen = false;
                 }),
-                onFullscreen: () => setState(() => _commentsFullscreen = !_commentsFullscreen),
+                onFullscreen: () =>
+                    setState(() => _commentsFullscreen = !_commentsFullscreen),
               ),
             ),
         ],
@@ -141,6 +155,109 @@ class _VideoPageState extends State<VideoPage> {
         state.likeCount--;
       }
     });
+  }
+
+  Future<void> _openSearch() async {
+    final query = await Navigator.of(context).push<String>(
+      MaterialPageRoute(
+        builder: (context) =>
+            VideoSearchPage(videos: _allVideos, initialQuery: _activeQuery),
+      ),
+    );
+
+    if (!mounted || query == null) {
+      return;
+    }
+
+    _applySearch(query);
+  }
+
+  void _applySearch(String query) {
+    final normalizedQuery = query.trim();
+    final filteredVideos = filterVideosByQuery(_allVideos, normalizedQuery);
+
+    setState(() {
+      _activeQuery = normalizedQuery;
+      _visibleVideos = filteredVideos;
+      _currentIndex = 0;
+      _showingComments = false;
+      _commentsFullscreen = false;
+    });
+
+    if (_pageController.hasClients && filteredVideos.isNotEmpty) {
+      _pageController.jumpToPage(0);
+    }
+  }
+
+  Widget _buildEmptySearchState() {
+    return Scaffold(
+      backgroundColor: FunnyColors.black,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  onPressed: _openSearch,
+                  icon: const Icon(Icons.search, color: FunnyColors.white),
+                  tooltip: '検索',
+                ),
+              ),
+              const Spacer(),
+              const Text(
+                '該当する内容が見つかりません',
+                style: TextStyle(
+                  color: FunnyColors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                _activeQuery.isEmpty
+                    ? '表示できる動画がありません。'
+                    : '「$_activeQuery」に一致するキーワードや説明がありません。',
+                style: const TextStyle(
+                  color: FunnyColors.white70,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton.icon(
+                  onPressed: _openSearch,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: FunnyColors.white,
+                    foregroundColor: FunnyColors.black,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  icon: const Icon(Icons.search),
+                  label: const Text('再検索'),
+                ),
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  onPressed: () => _applySearch(''),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: FunnyColors.white,
+                    side: const BorderSide(color: FunnyColors.white70),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  child: const Text('検索をクリアして全件表示'),
+                ),
+              ),
+              const Spacer(),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override

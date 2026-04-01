@@ -4,6 +4,8 @@ import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 import '../models/video_model.dart';
 
+// video_player と Chewie の初期化と再生状態を管理するミックスイン。
+
 mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
   late VideoPlayerController _videoController;
   ChewieController? _chewieController;
@@ -37,7 +39,7 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
       await initialization.timeout(
         const Duration(seconds: 10),
         onTimeout: () {
-          throw TimeoutException('视频加载超时');
+          throw TimeoutException('動画の読み込みがタイムアウトしました');
         },
       );
 
@@ -67,12 +69,12 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
       if (mounted) setState(() {});
     } on TimeoutException {
       _hasError = true;
-      _errorMessage = '视频加载超时，请检查网络';
+      _errorMessage = '動画の読み込みがタイムアウトしました。通信状況を確認してください';
       _isLoading = false;
       if (mounted) setState(() {});
     } catch (e) {
       _hasError = true;
-      _errorMessage = '视频加载失败: ${e.toString()}';
+      _errorMessage = '動画の読み込みに失敗しました: ${e.toString()}';
       _isLoading = false;
       if (mounted) setState(() {});
     }

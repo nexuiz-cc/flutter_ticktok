@@ -3,6 +3,8 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import '../data/mock_messages.dart';
 
+// 個別チャットの会話表示と送信操作を担当する画面。
+
 class ChatDetailPage extends StatefulWidget {
   final MessageItem message;
 
@@ -20,19 +22,17 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   List<ChatMessage> _chats = [];
   bool _showMorePanel = false;
 
-  // 快捷表情
   static const _quickEmojis = ['👋', '🙏', '😊', '😂', '❤️', '👍', '🔥', '😍'];
 
-  // 功能面板项
   static const _moreActions = [
-    {'icon': Icons.photo_library_outlined, 'label': '相册'},
-    {'icon': Icons.camera_alt_outlined, 'label': '拍摄'},
-    {'icon': Icons.videocam_outlined, 'label': '视频通话'},
-    {'icon': Icons.weekend_outlined, 'label': '一起看'},
-    {'icon': Icons.wallet_outlined, 'label': '红包'},
-    {'icon': Icons.location_on_outlined, 'label': '位置'},
-    {'icon': Icons.swap_horiz, 'label': '转账'},
-    {'icon': Icons.contact_page_outlined, 'label': '个人名片'},
+    {'icon': Icons.photo_library_outlined, 'label': '写真'},
+    {'icon': Icons.camera_alt_outlined, 'label': '撮影'},
+    {'icon': Icons.videocam_outlined, 'label': 'ビデオ通話'},
+    {'icon': Icons.weekend_outlined, 'label': '一緒に見る'},
+    {'icon': Icons.wallet_outlined, 'label': 'ギフト'},
+    {'icon': Icons.location_on_outlined, 'label': '位置情報'},
+    {'icon': Icons.swap_horiz, 'label': '送金'},
+    {'icon': Icons.contact_page_outlined, 'label': '連絡先カード'},
   ];
 
   @override
@@ -74,12 +74,14 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     final text = _inputController.text.trim();
     if (text.isEmpty) return;
     setState(() {
-      _chats.add(ChatMessage(
-        id: 'new_${DateTime.now().millisecondsSinceEpoch}',
-        content: text,
-        isMe: true,
-        time: '',
-      ));
+      _chats.add(
+        ChatMessage(
+          id: 'new_${DateTime.now().millisecondsSinceEpoch}',
+          content: text,
+          isMe: true,
+          time: '',
+        ),
+      );
       _inputController.clear();
       _showMorePanel = false;
     });
@@ -96,7 +98,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   }
 
   Future<void> _pickImage(ImageSource source) async {
-    // 关闭功能面板
     setState(() => _showMorePanel = false);
     try {
       final XFile? file = await _picker.pickImage(
@@ -107,19 +108,21 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       );
       if (file == null) return;
       setState(() {
-        _chats.add(ChatMessage(
-          id: 'img_${DateTime.now().millisecondsSinceEpoch}',
-          content: '',
-          isMe: true,
-          imagePath: file.path,
-        ));
+        _chats.add(
+          ChatMessage(
+            id: 'img_${DateTime.now().millisecondsSinceEpoch}',
+            content: '',
+            isMe: true,
+            imagePath: file.path,
+          ),
+        );
       });
       WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('画像の取得に失敗しました: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('画像の取得に失敗しました: $e')));
       }
     }
   }
@@ -128,28 +131,35 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? const Color(0xFF1A1A1A) : Colors.white;
-    final bubbleBgOther = isDark ? const Color(0xFF2C2C2C) : const Color(0xFFF0F0F0);
+    final bubbleBgOther = isDark
+        ? const Color(0xFF2C2C2C)
+        : const Color(0xFFF0F0F0);
     final bubbleTextOther = isDark ? Colors.white : Colors.black87;
     final topBarBg = isDark ? const Color(0xFF1A1A1A) : Colors.white;
     final topBarText = isDark ? Colors.white : Colors.black;
     final topBarSub = isDark ? Colors.grey[400]! : Colors.grey[600]!;
     final inputBg = isDark ? const Color(0xFF2C2C2C) : const Color(0xFFF5F5F5);
     final inputText = isDark ? Colors.white : Colors.black87;
-    final dividerColor = isDark ? const Color(0xFF333333) : const Color(0xFFEEEEEE);
+    final dividerColor = isDark
+        ? const Color(0xFF333333)
+        : const Color(0xFFEEEEEE);
 
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
         child: Column(
           children: [
-            // 顶部栏
             Container(
               color: topBarBg,
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               child: Row(
                 children: [
                   IconButton(
-                    icon: Icon(Icons.arrow_back_ios, size: 20, color: topBarText),
+                    icon: Icon(
+                      Icons.arrow_back_ios,
+                      size: 20,
+                      color: topBarText,
+                    ),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                   _buildTopAvatar(),
@@ -179,11 +189,13 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             ),
             Divider(height: 1, color: dividerColor),
 
-            // 消息列表
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 itemCount: _chats.length,
                 itemBuilder: (context, index) {
                   return _buildChatBubble(
@@ -194,8 +206,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 },
               ),
             ),
-
-            // 快捷表情条
             Container(
               color: topBarBg,
               height: 44,
@@ -214,7 +224,10 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Center(
-                        child: Text(_quickEmojis[index], style: const TextStyle(fontSize: 22)),
+                        child: Text(
+                          _quickEmojis[index],
+                          style: const TextStyle(fontSize: 22),
+                        ),
                       ),
                     ),
                   );
@@ -222,8 +235,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               ),
             ),
             Divider(height: 1, color: dividerColor),
-
-            // 输入栏
             Container(
               color: topBarBg,
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -236,10 +247,15 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        if (_showMorePanel) setState(() => _showMorePanel = false);
+                        if (_showMorePanel) {
+                          setState(() => _showMorePanel = false);
+                        }
                       },
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
                         decoration: BoxDecoration(
                           color: inputBg,
                           borderRadius: BorderRadius.circular(20),
@@ -250,7 +266,10 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                           style: TextStyle(color: inputText, fontSize: 15),
                           decoration: InputDecoration(
                             hintText: 'メッセージを送る...',
-                            hintStyle: TextStyle(color: topBarSub, fontSize: 15),
+                            hintStyle: TextStyle(
+                              color: topBarSub,
+                              fontSize: 15,
+                            ),
                             border: InputBorder.none,
                             isDense: true,
                             contentPadding: EdgeInsets.zero,
@@ -262,7 +281,11 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.sentiment_satisfied_alt_outlined, color: topBarSub, size: 26),
+                    icon: Icon(
+                      Icons.sentiment_satisfied_alt_outlined,
+                      color: topBarSub,
+                      size: 26,
+                    ),
                     onPressed: () {},
                   ),
                   ValueListenableBuilder<TextEditingValue>(
@@ -282,7 +305,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                                 : Border.all(color: topBarSub, width: 1.5),
                           ),
                           child: Icon(
-                            hasText ? Icons.send : (_showMorePanel ? Icons.close : Icons.add),
+                            hasText
+                                ? Icons.send
+                                : (_showMorePanel ? Icons.close : Icons.add),
                             color: hasText ? Colors.white : topBarSub,
                             size: 20,
                           ),
@@ -294,13 +319,14 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               ),
             ),
 
-            // 功能面板
             AnimatedContainer(
               duration: const Duration(milliseconds: 250),
               curve: Curves.easeInOut,
               height: _showMorePanel ? 260 : 0,
               color: isDark ? const Color(0xFF1A1A1A) : const Color(0xFFF2F2F2),
-              child: _showMorePanel ? _buildMorePanel(isDark) : const SizedBox.shrink(),
+              child: _showMorePanel
+                  ? _buildMorePanel(isDark)
+                  : const SizedBox.shrink(),
             ),
           ],
         ),
@@ -338,7 +364,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     Color bubbleBgOther,
     Color bubbleTextOther,
   ) {
-    // 系统消息
     if (chat.isSystem) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
@@ -357,7 +382,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
-        mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: isMe
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           if (!isMe) ...[
@@ -418,7 +445,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
           ),
           if (isMe) ...[
             const SizedBox(width: 8),
-            // 自己头像（用首字母代替）
             Container(
               width: 36,
               height: 36,
@@ -447,7 +473,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Column(
         children: [
-          // 8宫格
           Expanded(
             child: GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
@@ -495,7 +520,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               },
             ),
           ),
-          // 分页指示器
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

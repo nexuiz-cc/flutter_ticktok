@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// いいね状態と表示件数の同期を担当するミックスイン。
+
 mixin VideoStateManager<T extends StatefulWidget> on State<T> {
   bool _isLiked = false;
   int _currentLikeCount = 0;

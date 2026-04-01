@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// 二重タップ処理の連続発火を抑えるミックスイン。
+
 mixin VideoGestureManager<T extends StatefulWidget> on State<T> {
   bool _isDoubleTapHandled = false;
 

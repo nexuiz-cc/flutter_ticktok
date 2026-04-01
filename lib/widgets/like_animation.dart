@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// いいね時のハート拡大アニメーションを描画する。
+
 class LikeAnimation extends StatefulWidget {
   final bool show;
   final VoidCallback? onComplete;

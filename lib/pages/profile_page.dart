@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../common/funny_colors.dart';
 
+// プロフィールのヘッダーと各種セクションをまとめて表示する画面。
+
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
@@ -67,14 +69,20 @@ class ProfileHeader extends StatelessWidget {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      '抖音号: dyuembzjff9p',
-                      style: TextStyle(fontSize: 14, color: FunnyColors.white70),
+                      'TikTok ID: dyuembzjff9p',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: FunnyColors.white70,
+                      ),
                     ),
                   ],
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.person_add_alt_1, color: FunnyColors.white),
+                icon: const Icon(
+                  Icons.person_add_alt_1,
+                  color: FunnyColors.white,
+                ),
                 onPressed: () {},
               ),
             ],
@@ -97,13 +105,13 @@ class ProfileStats extends StatelessWidget {
         children: [
           Row(
             children: const [
-              _StatItem(label: '获赞', value: '69'),
+              _StatItem(label: 'いいね', value: '69'),
               SizedBox(width: 1),
-              _StatItem(label: '互关', value: '2'),
+              _StatItem(label: '相互', value: '2'),
               SizedBox(width: 1),
-              _StatItem(label: '关注', value: '362'),
+              _StatItem(label: 'フォロー中', value: '362'),
               SizedBox(width: 1),
-              _StatItem(label: '粉丝', value: '7'),
+              _StatItem(label: 'フォロワー', value: '7'),
             ],
           ),
           const Spacer(),
@@ -121,7 +129,7 @@ class ProfileStats extends StatelessWidget {
                 textStyle: const TextStyle(fontSize: 14),
               ),
               onPressed: () {},
-              child: const Text('编辑主页'),
+              child: const Text('プロフィールを編集'),
             ),
           ),
         ],
@@ -170,7 +178,7 @@ class ProfileBio extends StatelessWidget {
         children: const [
           Expanded(
             child: Text(
-              '点击添加介绍，让大家认识你...',
+              '自己紹介を追加して、みんなに知ってもらおう...',
               style: TextStyle(color: FunnyColors.black),
             ),
           ),
@@ -190,11 +198,11 @@ class ProfileActionsGrid extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: const [
-          _ActionIcon(icon: Icons.shopping_bag, label: '我的订单'),
-          _ActionIcon(icon: Icons.history, label: '观看历史'),
-          _ActionIcon(icon: Icons.account_balance_wallet, label: '我的钱包'),
-          _ActionIcon(icon: Icons.watch_later, label: '稍后再看'),
-          _ActionIcon(icon: Icons.grid_view, label: '全部功能'),
+          _ActionIcon(icon: Icons.shopping_bag, label: '注文'),
+          _ActionIcon(icon: Icons.history, label: '視聴履歴'),
+          _ActionIcon(icon: Icons.account_balance_wallet, label: 'ウォレット'),
+          _ActionIcon(icon: Icons.watch_later, label: 'あとで見る'),
+          _ActionIcon(icon: Icons.grid_view, label: 'すべて'),
         ],
       ),
     );
@@ -211,7 +219,10 @@ class _ActionIcon extends StatelessWidget {
       children: [
         Icon(icon, size: 28, color: FunnyColors.black87),
         const SizedBox(height: 4),
-        Text(label, style: const TextStyle(fontSize: 12, color: FunnyColors.black)),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 12, color: FunnyColors.black),
+        ),
       ],
     );
   }
@@ -234,7 +245,9 @@ class ProfileTabs extends StatelessWidget {
               ),
               Theme(
                 data: Theme.of(context).copyWith(
-                  tabBarTheme: Theme.of(context).tabBarTheme.copyWith(dividerColor: Colors.transparent),
+                  tabBarTheme: Theme.of(
+                    context,
+                  ).tabBarTheme.copyWith(dividerColor: Colors.transparent),
                 ),
                 child: TabBar(
                   labelColor: FunnyColors.black,
@@ -243,11 +256,11 @@ class ProfileTabs extends StatelessWidget {
                   indicatorColor: Colors.transparent,
                   indicatorWeight: 0,
                   tabs: const [
-                    Tab(text: '作品'),
+                    Tab(text: '投稿'),
                     Tab(text: '日常'),
-                    Tab(text: '推荐'),
-                    Tab(text: '收藏'),
-                    Tab(text: '喜欢'),
+                    Tab(text: 'おすすめ'),
+                    Tab(text: '保存済み'),
+                    Tab(text: 'いいね'),
                   ],
                 ),
               ),
@@ -258,9 +271,9 @@ class ProfileTabs extends StatelessWidget {
               children: [
                 VideoGrid(),
                 Center(child: Text('日常')),
-                Center(child: Text('推荐')),
-                Center(child: Text('收藏')),
-                Center(child: Text('喜欢')),
+                Center(child: Text('おすすめ')),
+                Center(child: Text('保存済み')),
+                Center(child: Text('いいね')),
               ],
             ),
           ),
@@ -284,9 +297,9 @@ class _CustomTabIndicatorPainter extends BoxPainter {
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
     final double height = configuration.size?.height ?? 0;
     final double indicatorHeight = 3.5;
-    final double startX = offset.dx-4;
+    final double startX = offset.dx - 4;
     final double endX = startX + 40;
-    final double y = offset.dy + height - indicatorHeight +0.5;
+    final double y = offset.dy + height - indicatorHeight + 0.5;
     final Paint paint = Paint()
       ..color = FunnyColors.black
       ..strokeWidth = indicatorHeight
@@ -319,7 +332,11 @@ class VideoGrid extends StatelessWidget {
             Container(
               color: FunnyColors.grey,
               child: const Center(
-                child: Icon(Icons.play_arrow, size: 40, color: FunnyColors.white),
+                child: Icon(
+                  Icons.play_arrow,
+                  size: 40,
+                  color: FunnyColors.white,
+                ),
               ),
             ),
             Positioned(

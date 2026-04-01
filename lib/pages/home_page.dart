@@ -6,6 +6,8 @@ import 'package:flutter_application/pages/profile_page.dart';
 import 'package:flutter_application/pages/message_page.dart';
 import 'friend_page.dart';
 
+// 下部ナビゲーションと各主要ページを束ねるルート画面。
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -19,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     const VideoPage(),
     const FriendPage(),
-    const PlaceholderPage(text: '拍摄'),
+    const PlaceholderPage(text: '撮影'),
     const MessagePage(),
     const ProfilePage(),
   ];
@@ -57,11 +59,11 @@ class _HomePageState extends State<HomePage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildNavItem(Icons.home, '首页', 0),
-              _buildNavItem(Icons.people_outline, '朋友', 1),
+              _buildNavItem(Icons.home, 'ホーム', 0),
+              _buildNavItem(Icons.people_outline, '友達', 1),
               _buildNavItem(Icons.add_circle_outline, '', 2, isCenter: true),
-              _buildNavItem(Icons.notifications_outlined, '消息', 3),
-              _buildNavItem(Icons.person_outline, '我', 4),
+              _buildNavItem(Icons.notifications_outlined, 'メッセージ', 3),
+              _buildNavItem(Icons.person_outline, 'マイ', 4),
             ],
           ),
         ),
@@ -97,7 +99,7 @@ class _HomePageState extends State<HomePage> {
 
     return GestureDetector(
       onTap: () {
-        _pageController.jumpToPage(index); //
+        _pageController.jumpToPage(index);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

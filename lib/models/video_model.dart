@@ -1,3 +1,4 @@
+// 動画表示に必要なメタデータをまとめるモデル。
 class VideoModel {
   final String id;
   final String videoUrl;

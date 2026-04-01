@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// いいね演出用アニメーション状態を再利用するミックスイン。
+
 mixin VideoAnimationManager<T extends StatefulWidget> on State<T> {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;

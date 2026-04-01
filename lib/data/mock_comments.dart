@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-// 评论数据模型
+// コメントシートで表示する階層コメントのモックデータ。
+
 class CommentData {
   final String id;
   final String user;

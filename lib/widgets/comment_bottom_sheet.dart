@@ -1,14 +1,20 @@
-// 评论底部弹窗
 import 'package:flutter/material.dart';
 import '../models/video_model.dart';
 import '../data/mock_comments.dart';
+
+// コメント一覧の表示と投稿入力を行うボトムシート。
 
 class CommentBottomSheet extends StatefulWidget {
   final VideoModel video;
   final VoidCallback? onClose;
   final VoidCallback? onFullscreen;
 
-  const CommentBottomSheet({super.key, required this.video, this.onClose, this.onFullscreen});
+  const CommentBottomSheet({
+    super.key,
+    required this.video,
+    this.onClose,
+    this.onFullscreen,
+  });
 
   @override
   State<CommentBottomSheet> createState() => _CommentBottomSheetState();
@@ -17,7 +23,6 @@ class CommentBottomSheet extends StatefulWidget {
 class _CommentBottomSheetState extends State<CommentBottomSheet> {
   final TextEditingController _commentController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  // 记录哪些评论/回复的展开状态
   final Set<String> _expandedIds = {};
 
   late List<CommentData> _comments;
@@ -42,10 +47,10 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
           0,
           CommentData(
             id: 'new_${DateTime.now().millisecondsSinceEpoch}',
-            user: '我',
+            user: '自分',
             avatarColor: const Color(0xFF1976D2),
             content: _commentController.text.trim(),
-            time: '刚刚',
+            time: 'たった今',
           ),
         );
         _commentController.clear();
@@ -63,7 +68,6 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
       ),
       child: Column(
         children: [
-          // 拖动条
           Container(
             margin: const EdgeInsets.only(top: 8),
             width: 40,
@@ -74,7 +78,6 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
             ),
           ),
 
-          // 顶部热搜条
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: Row(
@@ -82,11 +85,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 Expanded(
                   child: RichText(
                     text: const TextSpan(
-                      text: '大家都在搜：',
+                      text: 'みんなが検索中: ',
                       style: TextStyle(color: Colors.black54, fontSize: 13),
                       children: [
                         TextSpan(
-                          text: '宁轲🔍',
+                          text: '人気ワード🔍',
                           style: TextStyle(
                             color: Colors.blue,
                             fontSize: 13,
@@ -109,7 +112,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       border: Border.all(color: Colors.grey.shade300),
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    child: const Icon(Icons.open_in_full, size: 14, color: Colors.black54),
+                    child: const Icon(
+                      Icons.open_in_full,
+                      size: 14,
+                      color: Colors.black54,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -127,16 +134,18 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       border: Border.all(color: Colors.grey.shade300),
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    child: const Icon(Icons.close, size: 14, color: Colors.black54),
+                    child: const Icon(
+                      Icons.close,
+                      size: 14,
+                      color: Colors.black54,
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-
-          // 评论数量
           Text(
-            '${_comments.length} 条评论',
+            '${_comments.length} 件のコメント',
             style: const TextStyle(
               color: Colors.black,
               fontSize: 15,
@@ -145,7 +154,6 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
           ),
           const SizedBox(height: 8),
 
-          // 评论列表
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -158,7 +166,6 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
 
           Divider(height: 1, color: Colors.grey[200]),
 
-          // 底部输入栏
           _buildInputBar(context),
         ],
       ),
@@ -166,30 +173,35 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   }
 
   Widget _buildCommentItem(CommentData comment, {int depth = 0}) {
-    const int maxDepth = 4; // 0~4 共5层
+    const int maxDepth = 4;
     final bool isExpanded = _expandedIds.contains(comment.id);
     final double avatarRadius = depth == 0 ? 20.0 : 14.0;
     final double indent = depth * 32.0;
 
     return Padding(
-      padding: EdgeInsets.only(left: indent, top: depth == 0 ? 12 : 6, bottom: 2),
+      padding: EdgeInsets.only(
+        left: indent,
+        top: depth == 0 ? 12 : 6,
+        bottom: 2,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 头像
           CircleAvatar(
             radius: avatarRadius,
             backgroundColor: comment.avatarColor,
-            child: Icon(Icons.person, color: Colors.white, size: avatarRadius * 0.9),
+            child: Icon(
+              Icons.person,
+              color: Colors.white,
+              size: avatarRadius * 0.9,
+            ),
           ),
           const SizedBox(width: 10),
 
-          // 内容区
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 用户名
                 Text(
                   comment.user,
                   style: TextStyle(
@@ -198,7 +210,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                   ),
                 ),
                 const SizedBox(height: 3),
-                // 评论正文
+
                 Text(
                   comment.content,
                   style: TextStyle(
@@ -207,7 +219,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                   ),
                 ),
                 const SizedBox(height: 6),
-                // 时间 · 地点 · 回复
+
                 Row(
                   children: [
                     Text(
@@ -220,13 +232,13 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                     GestureDetector(
                       onTap: () {},
                       child: Text(
-                        '回复',
+                        '返信',
                         style: TextStyle(color: Colors.grey[500], fontSize: 12),
                       ),
                     ),
                   ],
                 ),
-                // 展开/折叠回复按钮（未到最大深度才显示）
+
                 if (comment.replies.isNotEmpty && depth < maxDepth) ...[
                   const SizedBox(height: 6),
                   GestureDetector(
@@ -241,13 +253,20 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                     },
                     child: Row(
                       children: [
-                        Container(width: 24, height: 1, color: Colors.grey[400]),
+                        Container(
+                          width: 24,
+                          height: 1,
+                          color: Colors.grey[400],
+                        ),
                         const SizedBox(width: 8),
                         Text(
                           isExpanded
-                              ? '收起回复'
-                              : '展开 ${comment.replies.length} 条回复',
-                          style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                              ? '返信を閉じる'
+                              : '${comment.replies.length} 件の返信を表示',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 13,
+                          ),
                         ),
                         const SizedBox(width: 2),
                         Icon(
@@ -261,18 +280,19 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                     ),
                   ),
                 ],
-                // 展开的回复列表（递归）
+
                 if (isExpanded && comment.replies.isNotEmpty)
                   Column(
                     children: comment.replies
-                        .map((reply) => _buildCommentItem(reply, depth: depth + 1))
+                        .map(
+                          (reply) => _buildCommentItem(reply, depth: depth + 1),
+                        )
                         .toList(),
                   ),
               ],
             ),
           ),
 
-          // 点赞
           Column(
             children: [
               GestureDetector(
@@ -322,7 +342,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 focusNode: _focusNode,
                 style: const TextStyle(color: Colors.black, fontSize: 14),
                 decoration: const InputDecoration(
-                  hintText: '有什么想法，展开说说',
+                  hintText: '感想を聞かせてください',
                   hintStyle: TextStyle(color: Colors.black38, fontSize: 14),
                   border: InputBorder.none,
                   isDense: true,
@@ -335,17 +355,29 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
           const SizedBox(width: 14),
           GestureDetector(
             onTap: () {},
-            child: const Icon(Icons.image_outlined, color: Colors.black54, size: 26),
+            child: const Icon(
+              Icons.image_outlined,
+              color: Colors.black54,
+              size: 26,
+            ),
           ),
           const SizedBox(width: 14),
           GestureDetector(
             onTap: () {},
-            child: const Icon(Icons.alternate_email, color: Colors.black54, size: 26),
+            child: const Icon(
+              Icons.alternate_email,
+              color: Colors.black54,
+              size: 26,
+            ),
           ),
           const SizedBox(width: 14),
           GestureDetector(
             onTap: () {},
-            child: const Icon(Icons.sentiment_satisfied_alt_outlined, color: Colors.black54, size: 26),
+            child: const Icon(
+              Icons.sentiment_satisfied_alt_outlined,
+              color: Colors.black54,
+              size: 26,
+            ),
           ),
         ],
       ),

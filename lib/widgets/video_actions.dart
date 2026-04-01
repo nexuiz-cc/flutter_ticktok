@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../common/funny_colors.dart';
 
+// 動画右側のアクションボタン群を表示する。
+
 class VideoActions extends StatefulWidget {
   final int likeCount;
   final bool isLiked;
@@ -34,9 +36,15 @@ class _VideoActionsState extends State<VideoActions> {
 
   Color _avatarColor(String name) {
     const colors = [
-      Color(0xFF1565C0), Color(0xFF6A1B9A), Color(0xFF00695C),
-      Color(0xFFBF360C), Color(0xFF2E7D32), Color(0xFF0277BD),
-      Color(0xFFAD1457), Color(0xFF4E342E), Color(0xFF37474F),
+      Color(0xFF1565C0),
+      Color(0xFF6A1B9A),
+      Color(0xFF00695C),
+      Color(0xFFBF360C),
+      Color(0xFF2E7D32),
+      Color(0xFF0277BD),
+      Color(0xFFAD1457),
+      Color(0xFF4E342E),
+      Color(0xFF37474F),
     ];
     return colors[name.codeUnits.fold(0, (a, b) => a + b) % colors.length];
   }
@@ -104,28 +112,28 @@ class _VideoActionsState extends State<VideoActions> {
         const SizedBox(height: 8),
         _buildActionButton(
           icon: Icons.chat_bubble_outline,
-          label: '评论',
+          label: 'コメント',
           onTap: widget.onComment,
           color: FunnyColors.white,
         ),
         const SizedBox(height: 8),
         _buildActionButton(
           icon: Icons.star_border,
-          label: '收藏',
+          label: '保存',
           onTap: widget.onCollect,
           color: FunnyColors.white,
         ),
         const SizedBox(height: 8),
         _buildActionButton(
           icon: Icons.share,
-          label: '分享',
+          label: 'シェア',
           onTap: widget.onShare,
           color: FunnyColors.white,
         ),
         const SizedBox(height: 20),
         _buildActionButton(
           icon: Icons.music_note,
-          label: '音乐',
+          label: '音楽',
           onTap: widget.onMusic,
           color: FunnyColors.bananaYellow,
         ),
@@ -140,7 +148,9 @@ class _VideoActionsState extends State<VideoActions> {
       color: _avatarColor(widget.authorName),
       child: Center(
         child: Text(
-          widget.authorName.isNotEmpty ? widget.authorName[0].toUpperCase() : '?',
+          widget.authorName.isNotEmpty
+              ? widget.authorName[0].toUpperCase()
+              : '?',
           style: const TextStyle(
             color: Colors.white,
             fontSize: 18,

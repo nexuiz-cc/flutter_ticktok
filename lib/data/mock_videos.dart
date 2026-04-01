@@ -1,15 +1,19 @@
 import '../models/video_model.dart';
 
+// フィードと検索画面で使う動画データのモック一覧。
+
 final List<VideoModel> mockVideos = [
   VideoModel(
     id: '1',
-    videoUrl: 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
-    coverUrl: 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.png',
-    title: '蜜蜂采蜜',
-    authorName: '自然之美',
+    videoUrl:
+        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+    coverUrl:
+        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.png',
+    title: 'ミツバチの蜜集め',
+    authorName: '自然の美',
     authorAvatar: 'https://i.pravatar.cc/150?img=1',
-    description: '忙碌的蜜蜂在花丛中采集花蜜',
-    keywords: ['蜜蜂', '自然', '采蜜', '动物'],
+    description: '忙しいミツバチが花の間で蜜を集めている',
+    keywords: ['ミツバチ', '自然', '蜜集め', '動物'],
     likeCount: 12345,
     commentCount: 543,
     collectCount: 1200,
@@ -18,13 +22,15 @@ final List<VideoModel> mockVideos = [
   ),
   VideoModel(
     id: '2',
-    videoUrl: 'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
-    coverUrl: 'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.png',
-    title: '蝴蝶飞舞',
-    authorName: '昆虫世界',
+    videoUrl:
+        'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
+    coverUrl:
+        'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.png',
+    title: 'チョウが舞う',
+    authorName: '昆虫ワールド',
     authorAvatar: 'https://i.pravatar.cc/150?img=2',
-    description: '美丽的蝴蝶在花丛中翩翩起舞',
-    keywords: ['蝴蝶', '昆虫', '自然', '花'],
+    description: '美しいチョウが花の間をひらひらと舞う',
+    keywords: ['チョウ', '昆虫', '自然', '花'],
     likeCount: 9876,
     commentCount: 321,
     collectCount: 876,
@@ -33,13 +39,15 @@ final List<VideoModel> mockVideos = [
   ),
   VideoModel(
     id: '3',
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-    coverUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg',
+    videoUrl:
+        'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    coverUrl:
+        'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg',
     title: 'Big Buck Bunny',
-    authorName: '动画世界',
+    authorName: 'アニメワールド',
     authorAvatar: 'https://i.pravatar.cc/150?img=3',
-    description: '经典动画短片，Big Buck Bunny 的冒险故事',
-    keywords: ['动画', '短片', '冒险', '兔子'],
+    description: '名作アニメ短編、Big Buck Bunny の冒険物語',
+    keywords: ['アニメ', '短編', '冒険', 'ウサギ'],
     likeCount: 54321,
     commentCount: 1234,
     collectCount: 2100,
@@ -48,13 +56,15 @@ final List<VideoModel> mockVideos = [
   ),
   VideoModel(
     id: '4',
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-    coverUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/ElephantsDream.jpg',
-    title: '大象之梦',
-    authorName: '创意动画',
+    videoUrl:
+        'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+    coverUrl:
+        'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/ElephantsDream.jpg',
+    title: 'エレファント・ドリーム',
+    authorName: 'クリエイティブアニメ',
     authorAvatar: 'https://i.pravatar.cc/150?img=4',
-    description: '梦幻般的大象动画，充满想象力',
-    keywords: ['大象', '动画', '梦幻', '创意'],
+    description: '幻想的な象のアニメーションで、想像力に満ちている',
+    keywords: ['ゾウ', 'アニメ', '幻想', '創作'],
     likeCount: 23456,
     commentCount: 876,
     collectCount: 1500,

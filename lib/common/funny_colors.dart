@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// アプリ全体で共有するカラーパレットをまとめる。
+
 class FunnyColors {
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);

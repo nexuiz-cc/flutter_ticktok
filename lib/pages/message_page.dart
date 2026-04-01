@@ -3,6 +3,8 @@ import '../common/funny_colors.dart';
 import '../data/mock_messages.dart';
 import 'chat_detail_page.dart';
 
+// ストーリー行とメッセージ一覧を表示する画面。
+
 class MessagePage extends StatelessWidget {
   const MessagePage({super.key});
 
@@ -11,7 +13,9 @@ class MessagePage extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? const Color(0xFF1A1A1A) : Colors.white;
     final textColor = isDark ? Colors.white : Colors.black;
-    final dividerColor = isDark ? const Color(0xFF333333) : const Color(0xFFEEEEEE);
+    final dividerColor = isDark
+        ? const Color(0xFF333333)
+        : const Color(0xFFEEEEEE);
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -25,7 +29,12 @@ class MessagePage extends StatelessWidget {
               child: ListView.builder(
                 itemCount: mockMessages.length,
                 itemBuilder: (context, index) {
-                  return _buildMessageItem(context, mockMessages[index], textColor, isDark);
+                  return _buildMessageItem(
+                    context,
+                    mockMessages[index],
+                    textColor,
+                    isDark,
+                  );
                 },
               ),
             ),
@@ -56,7 +65,11 @@ class MessagePage extends StatelessWidget {
                   child: const Center(
                     child: Text(
                       '1',
-                      style: TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 9,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -76,8 +89,12 @@ class MessagePage extends StatelessWidget {
           Expanded(
             child: Center(
               child: Text(
-                '娑堟伅',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: textColor),
+                'メッセージ',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                ),
               ),
             ),
           ),
@@ -99,8 +116,12 @@ class MessagePage extends StatelessWidget {
 
   Widget _buildStoryRow(BuildContext context, bool isDark) {
     final storyTextColor = isDark ? Colors.white70 : Colors.black87;
-    final storyBorderColor = isDark ? const Color(0xFF444444) : const Color(0xFFEEEEEE);
-    final storyFallbackBg = isDark ? const Color(0xFF333333) : const Color(0xFFEEEEEE);
+    final storyBorderColor = isDark
+        ? const Color(0xFF444444)
+        : const Color(0xFFEEEEEE);
+    final storyFallbackBg = isDark
+        ? const Color(0xFF333333)
+        : const Color(0xFFEEEEEE);
     final storyIconColor = isDark ? Colors.grey[400]! : Colors.grey;
 
     return SizedBox(
@@ -131,21 +152,33 @@ class MessagePage extends StatelessWidget {
                         child: story.isSettings
                             ? Container(
                                 color: storyFallbackBg,
-                                child: Icon(Icons.settings, color: storyIconColor, size: 28),
+                                child: Icon(
+                                  Icons.settings,
+                                  color: storyIconColor,
+                                  size: 28,
+                                ),
                               )
                             : story.avatarUrl.isNotEmpty
-                                ? Image.network(
-                                    story.avatarUrl,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (_, _, _) => Container(
-                                      color: storyFallbackBg,
-                                      child: Icon(Icons.person, color: storyIconColor, size: 28),
-                                    ),
-                                  )
-                                : Container(
-                                    color: storyFallbackBg,
-                                    child: Icon(Icons.person, color: storyIconColor, size: 28),
+                            ? Image.network(
+                                story.avatarUrl,
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, _, _) => Container(
+                                  color: storyFallbackBg,
+                                  child: Icon(
+                                    Icons.person,
+                                    color: storyIconColor,
+                                    size: 28,
                                   ),
+                                ),
+                              )
+                            : Container(
+                                color: storyFallbackBg,
+                                child: Icon(
+                                  Icons.person,
+                                  color: storyIconColor,
+                                  size: 28,
+                                ),
+                              ),
                       ),
                     ),
                     if (story.isAddStory)
@@ -158,9 +191,18 @@ class MessagePage extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: FunnyColors.red,
                             shape: BoxShape.circle,
-                            border: Border.all(color: isDark ? const Color(0xFF1A1A1A) : Colors.white, width: 1.5),
+                            border: Border.all(
+                              color: isDark
+                                  ? const Color(0xFF1A1A1A)
+                                  : Colors.white,
+                              width: 1.5,
+                            ),
                           ),
-                          child: const Icon(Icons.add, color: Colors.white, size: 11),
+                          child: const Icon(
+                            Icons.add,
+                            color: Colors.white,
+                            size: 11,
+                          ),
                         ),
                       ),
                   ],
@@ -180,16 +222,19 @@ class MessagePage extends StatelessWidget {
     );
   }
 
-  Widget _buildMessageItem(BuildContext context, MessageItem msg, Color textColor, bool isDark) {
+  Widget _buildMessageItem(
+    BuildContext context,
+    MessageItem msg,
+    Color textColor,
+    bool isDark,
+  ) {
     final subTextColor = isDark ? Colors.grey[400]! : Colors.grey;
 
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => ChatDetailPage(message: msg),
-          ),
-        );
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => ChatDetailPage(message: msg)));
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -214,8 +259,12 @@ class MessagePage extends StatelessWidget {
                       ),
                       child: const Center(
                         child: Text(
-                          '直播中',
-                          style: TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold),
+                          'ライブ中',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
@@ -244,7 +293,11 @@ class MessagePage extends StatelessWidget {
                       if (msg.isMuted)
                         Padding(
                           padding: const EdgeInsets.only(right: 4),
-                          child: Icon(Icons.notifications_off_outlined, size: 13, color: subTextColor),
+                          child: Icon(
+                            Icons.notifications_off_outlined,
+                            size: 13,
+                            color: subTextColor,
+                          ),
                         ),
                       Text(
                         msg.time,
@@ -281,7 +334,10 @@ class MessagePage extends StatelessWidget {
       return Container(
         width: 52,
         height: 52,
-        decoration: BoxDecoration(color: msg.avatarColor, shape: BoxShape.circle),
+        decoration: BoxDecoration(
+          color: msg.avatarColor,
+          shape: BoxShape.circle,
+        ),
         child: const Icon(Icons.forum_rounded, color: Colors.white, size: 26),
       );
     }
@@ -321,8 +377,14 @@ class MessagePage extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         text: TextSpan(
           children: [
-            TextSpan(text: tag, style: const TextStyle(color: FunnyColors.red, fontSize: 13)),
-            TextSpan(text: rest, style: TextStyle(color: subColor, fontSize: 13)),
+            TextSpan(
+              text: tag,
+              style: const TextStyle(color: FunnyColors.red, fontSize: 13),
+            ),
+            TextSpan(
+              text: rest,
+              style: TextStyle(color: subColor, fontSize: 13),
+            ),
           ],
         ),
       );
@@ -335,4 +397,3 @@ class MessagePage extends StatelessWidget {
     );
   }
 }
-  

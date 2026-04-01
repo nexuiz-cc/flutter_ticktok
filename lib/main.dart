@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
 
+// アプリ全体のテーマと最初の画面を設定するエントリーポイント。
+
 void main() {
   runApp(const MyApp());
 }

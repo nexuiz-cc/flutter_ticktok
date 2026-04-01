@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-// 聊天气泡模型
+// メッセージ画面と詳細画面で使うチャット関連のモックデータ。
+
 class ChatMessage {
   final String id;
   final String content;
   final bool isMe;
   final String time;
   final bool isSystem;
-  final String? imagePath; // 本地图片路径
+  final String? imagePath;
 
   const ChatMessage({
     required this.id,
@@ -19,55 +20,99 @@ class ChatMessage {
   });
 }
 
-// 每个会话的聊天记录
 final Map<String, List<ChatMessage>> mockChatHistory = {
   'm1': [
-    ChatMessage(id: 'sys1', content: '2026-03-20 14:30', isMe: false, isSystem: true),
+    ChatMessage(
+      id: 'sys1',
+      content: '2026-03-20 14:30',
+      isMe: false,
+      isSystem: true,
+    ),
     ChatMessage(id: 'c1', content: '新しい動画みたよ！最高すぎる😭', isMe: false),
     ChatMessage(id: 'c2', content: 'ほんと！？どの動画？', isMe: true),
     ChatMessage(id: 'c3', content: 'さっき投稿されたやつ！もう100回リピートしてる笑', isMe: false),
     ChatMessage(id: 'c4', content: 'わかるwww 私も見た！神すぎた', isMe: true),
-    ChatMessage(id: 'sys2', content: '2026-03-20 15:00', isMe: false, isSystem: true),
+    ChatMessage(
+      id: 'sys2',
+      content: '2026-03-20 15:00',
+      isMe: false,
+      isSystem: true,
+    ),
     ChatMessage(id: 'c5', content: 'そういえばグループのイベントどうする？', isMe: false),
     ChatMessage(id: 'c6', content: '行く行く！絶対行く！', isMe: true),
     ChatMessage(id: 'c7', content: 'よかった！楽しみにしてるね〜', isMe: false),
     ChatMessage(id: 'c8', content: 'こちらこそ！👏', isMe: true),
   ],
   'm2': [
-    ChatMessage(id: 'sys1', content: '2026-03-25 09:00', isMe: false, isSystem: true),
+    ChatMessage(
+      id: 'sys1',
+      content: '2026-03-25 09:00',
+      isMe: false,
+      isSystem: true,
+    ),
     ChatMessage(id: 'c1', content: '[9件] グループ主が新作を公開しました！', isMe: false),
     ChatMessage(id: 'c2', content: 'もう見た？すごいクオリティだよね', isMe: false),
     ChatMessage(id: 'c3', content: 'まだ見てない！今から見る', isMe: true),
     ChatMessage(id: 'c4', content: '絶対好きだと思う！', isMe: false),
   ],
   'm4': [
-    ChatMessage(id: 'sys1', content: '2026-01-29 20:00', isMe: false, isSystem: true),
+    ChatMessage(
+      id: 'sys1',
+      content: '2026-01-29 20:00',
+      isMe: false,
+      isSystem: true,
+    ),
     ChatMessage(id: 'c1', content: 'これ見て！すごいよ', isMe: false),
     ChatMessage(id: 'c2', content: '[動画を共有]', isMe: false),
     ChatMessage(id: 'c3', content: 'え、何これ笑えるwww', isMe: true),
     ChatMessage(id: 'c4', content: 'でしょ！また面白いのあったら送るね', isMe: false),
   ],
   'm6': [
-    ChatMessage(id: 'sys1', content: '2026-03-31 10:00', isMe: false, isSystem: true),
-    ChatMessage(id: 'c1', content: 'お互いフォローしました。チャットを始めましょう！', isMe: false, isSystem: true),
+    ChatMessage(
+      id: 'sys1',
+      content: '2026-03-31 10:00',
+      isMe: false,
+      isSystem: true,
+    ),
+    ChatMessage(
+      id: 'c1',
+      content: 'お互いフォローしました。チャットを始めましょう！',
+      isMe: false,
+      isSystem: true,
+    ),
     ChatMessage(id: 'c2', content: 'はじめまして！よろしくお願いします😊', isMe: true),
   ],
   'm7': [
-    ChatMessage(id: 'sys1', content: '2026-03-30 22:00', isMe: false, isSystem: true),
+    ChatMessage(
+      id: 'sys1',
+      content: '2026-03-30 22:00',
+      isMe: false,
+      isSystem: true,
+    ),
     ChatMessage(id: 'c1', content: '今日も一日お疲れ様！', isMe: true),
     ChatMessage(id: 'c2', content: 'ありがとう！あなたもね〜', isMe: false),
     ChatMessage(id: 'c3', content: 'おやすみ〜また明日ね😊', isMe: false),
     ChatMessage(id: 'c4', content: 'おやすみ！良い夢見てね🌙', isMe: true),
   ],
   'm8': [
-    ChatMessage(id: 'sys1', content: '2026-03-29 18:30', isMe: false, isSystem: true),
+    ChatMessage(
+      id: 'sys1',
+      content: '2026-03-29 18:30',
+      isMe: false,
+      isSystem: true,
+    ),
     ChatMessage(id: 'c1', content: 'これ見て笑いすぎてて', isMe: false),
     ChatMessage(id: 'c2', content: 'その動画笑いすぎてお腹痛いwww', isMe: false),
     ChatMessage(id: 'c3', content: 'どれどれ笑', isMe: true),
     ChatMessage(id: 'c4', content: 'ほんとだwww 天才すぎる', isMe: true),
   ],
   'm11': [
-    ChatMessage(id: 'sys1', content: '2026-03-28 12:00', isMe: false, isSystem: true),
+    ChatMessage(
+      id: 'sys1',
+      content: '2026-03-28 12:00',
+      isMe: false,
+      isSystem: true,
+    ),
     ChatMessage(id: 'c1', content: '明日暇？カフェ行かない？', isMe: false),
     ChatMessage(id: 'c2', content: 'いいね！何時ごろ？', isMe: true),
     ChatMessage(id: 'c3', content: '午後2時くらいはどう？', isMe: false),
@@ -77,7 +122,6 @@ final Map<String, List<ChatMessage>> mockChatHistory = {
   ],
 };
 
-// 状态栏故事模型
 class StoryItem {
   final String name;
   final String avatarUrl;
@@ -96,7 +140,6 @@ class StoryItem {
   });
 }
 
-// 消息列表模型
 class MessageItem {
   final String id;
   final String name;
@@ -129,7 +172,7 @@ class MessageItem {
 
 final List<StoryItem> mockStories = [
   StoryItem(
-    name: '限時日常',
+    name: 'デイリー',
     avatarUrl: 'https://i.pravatar.cc/150?img=5',
     hasNewStory: true,
     isAddStory: true,
@@ -144,11 +187,7 @@ final List<StoryItem> mockStories = [
     avatarUrl: 'https://i.pravatar.cc/150?img=12',
     hasNewStory: false,
   ),
-  StoryItem(
-    name: '状態設定',
-    avatarUrl: '',
-    isSettings: true,
-  ),
+  StoryItem(name: '設定', avatarUrl: '', isSettings: true),
 ];
 
 final List<MessageItem> mockMessages = [

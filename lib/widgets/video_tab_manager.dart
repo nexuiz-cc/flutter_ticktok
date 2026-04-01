@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// 動画画面上部タブの選択と並び替えを管理するミックスイン。
+
 mixin VideoTabManager<T extends StatefulWidget> on State<T> {
   late List<String> _tabs;
   late int _selectedTab;
@@ -9,13 +11,16 @@ mixin VideoTabManager<T extends StatefulWidget> on State<T> {
   set selectedTab(int value) => _selectedTab = value;
 
   void initTabs() {
-    _tabs = ['经验', '精选', '热点', '同城', '关注', '直播', '商城', '推荐'];
+    _tabs = ['経験', '厳選', '話題', '近く', 'フォロー', 'ライブ', 'ショップ', 'おすすめ'];
     _selectedTab = 0;
   }
 
   void onTabReorder(int oldIndex, int newIndex) {
     setState(() {
-      if (oldIndex < newIndex) newIndex--;
+      if (oldIndex < newIndex) {
+        newIndex--;
+      }
+
       final item = _tabs.removeAt(oldIndex);
       _tabs.insert(newIndex, item);
 

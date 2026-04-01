@@ -1,6 +1,7 @@
-// 底部信息区
 import 'package:flutter/material.dart';
 import '../common/funny_colors.dart';
+
+// 動画下部の投稿者名・説明・ハッシュタグを表示する。
 
 class VideoBottomInfo extends StatelessWidget {
   final String authorName;
@@ -48,7 +49,7 @@ class VideoBottomInfo extends StatelessWidget {
                 vertical: 1,
               ),
               decoration: BoxDecoration(
-                color: FunnyColors.black.withOpacity(0.7),
+                color: FunnyColors.black.withValues(alpha: 0.7),
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
