@@ -9,6 +9,7 @@ class MessagePage extends StatelessWidget {
   const MessagePage({super.key});
 
   @override
+  // 上部バー、ストーリー、メッセージ一覧で画面を構成する。
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? const Color(0xFF1A1A1A) : Colors.white;
@@ -22,10 +23,13 @@ class MessagePage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
+            // 画面上部のタイトルバー。
             _buildTopBar(context, textColor),
+            // 横スクロールのストーリー一覧。
             _buildStoryRow(context, isDark),
             Divider(height: 1, color: dividerColor),
             Expanded(
+              // 会話一覧。
               child: ListView.builder(
                 itemCount: mockMessages.length,
                 itemBuilder: (context, index) {
@@ -44,6 +48,7 @@ class MessagePage extends StatelessWidget {
     );
   }
 
+  // メッセージ画面のヘッダー操作群を描画する。
   Widget _buildTopBar(BuildContext context, Color textColor) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -114,6 +119,7 @@ class MessagePage extends StatelessWidget {
     );
   }
 
+  // ストーリーと設定ショートカットを横並びで表示する。
   Widget _buildStoryRow(BuildContext context, bool isDark) {
     final storyTextColor = isDark ? Colors.white70 : Colors.black87;
     final storyBorderColor = isDark
@@ -228,6 +234,7 @@ class MessagePage extends StatelessWidget {
     Color textColor,
     bool isDark,
   ) {
+    // 各会話のプレビュー行を組み立てる。
     final subTextColor = isDark ? Colors.grey[400]! : Colors.grey;
 
     return InkWell(
@@ -329,6 +336,7 @@ class MessagePage extends StatelessWidget {
     );
   }
 
+  // 種類に応じて会話アバターを切り替える。
   Widget _buildAvatar(MessageItem msg) {
     if (msg.isInteraction) {
       return Container(
@@ -358,6 +366,7 @@ class MessagePage extends StatelessWidget {
     );
   }
 
+  // 画像読み込み失敗時や未設定時に使う代替アバター。
   Widget _fallbackAvatar(MessageItem msg) {
     return Container(
       width: 52,
@@ -367,6 +376,7 @@ class MessagePage extends StatelessWidget {
     );
   }
 
+  // メンション付きメッセージは強調表示してプレビューする。
   Widget _buildLastMessage(MessageItem msg, Color subColor) {
     if (msg.isMentioned) {
       final parts = msg.lastMessage.split(']');

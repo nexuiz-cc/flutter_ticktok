@@ -34,6 +34,7 @@ class VideoActions extends StatefulWidget {
 class _VideoActionsState extends State<VideoActions> {
   bool _isFollowing = false;
 
+  // 投稿者名からフォールバック用の色を決める。
   Color _avatarColor(String name) {
     const colors = [
       Color(0xFF1565C0),
@@ -50,6 +51,7 @@ class _VideoActionsState extends State<VideoActions> {
   }
 
   @override
+  // フォロー、いいね、コメントなどの操作ボタン列を描画する。
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -141,6 +143,7 @@ class _VideoActionsState extends State<VideoActions> {
     );
   }
 
+  // 画像が使えない場合に頭文字アバターを表示する。
   Widget _buildFallbackAvatar() {
     return Container(
       width: 48,
@@ -167,6 +170,7 @@ class _VideoActionsState extends State<VideoActions> {
     required VoidCallback onTap,
     required Color color,
   }) {
+    // 各操作ボタンの共通見た目を組み立てる。
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -186,6 +190,7 @@ class _VideoActionsState extends State<VideoActions> {
     );
   }
 
+  // 数字を省略表記に変換して表示密度を抑える。
   String _formatCount(int count) {
     if (count >= 10000) {
       return '${(count / 10000).toStringAsFixed(1)}w';

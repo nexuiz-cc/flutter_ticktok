@@ -11,6 +11,7 @@ mixin VideoAnimationManager<T extends StatefulWidget> on State<T> {
   AnimationController get animationController => _animationController;
   bool get showLikeAnimation => _showLikeAnimation;
 
+  // いいね演出で使う拡大とフェードのアニメーションを初期化する。
   void initAnimations(TickerProvider vsync) {
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 500),
@@ -24,6 +25,7 @@ mixin VideoAnimationManager<T extends StatefulWidget> on State<T> {
     );
   }
 
+  // ハート演出を一度だけ再生し、完了後に表示を戻す。
   void playLikeAnimation() {
     if (_showLikeAnimation) return;
 
@@ -45,6 +47,7 @@ mixin VideoAnimationManager<T extends StatefulWidget> on State<T> {
   Animation<double> get scaleAnimation => _scaleAnimation;
   Animation<double> get opacityAnimation => _opacityAnimation;
 
+  // アニメーションコントローラを破棄する。
   void disposeAnimations() {
     _animationController.dispose();
   }

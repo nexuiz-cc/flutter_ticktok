@@ -7,6 +7,7 @@ class VideoLoadingView extends StatelessWidget {
   const VideoLoadingView({super.key});
 
   @override
+  // 動画読み込み中の待機表示。
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: FunnyColors.pandaBlack,
@@ -27,6 +28,7 @@ class VideoErrorView extends StatelessWidget {
   });
 
   @override
+  // エラー内容と再試行導線を表示する。
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: FunnyColors.pandaBlack,

@@ -7,6 +7,7 @@ class FriendPage extends StatelessWidget {
   const FriendPage({super.key});
 
   @override
+  // 友達タブの仮画面を表示する。
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: FunnyColors.black,

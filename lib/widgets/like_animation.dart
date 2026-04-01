@@ -18,15 +18,17 @@ class _LikeAnimationState extends State<LikeAnimation>
   late Animation<double> _scaleAnimation;
 
   @override
+  // 拡大アニメーションを作成し、必要なら初回再生する。
   void initState() {
     super.initState();
     _controller = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(begin: 0.0, end: 1.5).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.elasticOut),
-    );
+    _scaleAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.5,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
     if (widget.show) {
       _controller.forward().then((_) {
         _controller.reverse();
@@ -36,6 +38,7 @@ class _LikeAnimationState extends State<LikeAnimation>
   }
 
   @override
+  // 表示フラグが立ったタイミングでアニメーションを再実行する。
   void didUpdateWidget(covariant LikeAnimation oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.show && !oldWidget.show) {
@@ -47,23 +50,21 @@ class _LikeAnimationState extends State<LikeAnimation>
   }
 
   @override
+  // アニメーションコントローラを破棄する。
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
   @override
+  // ハートアイコンの拡大表示を組み立てる。
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _scaleAnimation,
       builder: (context, child) {
         return Transform.scale(
           scale: _scaleAnimation.value,
-          child: Icon(
-            Icons.favorite,
-            color: Colors.red,
-            size: 80,
-          ),
+          child: Icon(Icons.favorite, color: Colors.red, size: 80),
         );
       },
     );

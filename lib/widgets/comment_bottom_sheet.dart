@@ -28,18 +28,21 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   late List<CommentData> _comments;
 
   @override
+  // コメント一覧をモックデータで初期化する。
   void initState() {
     super.initState();
     _comments = List.from(mockComments);
   }
 
   @override
+  // 入力関連のコントローラを破棄する。
   void dispose() {
     _commentController.dispose();
     _focusNode.dispose();
     super.dispose();
   }
 
+  // 新しいコメントを先頭に追加して入力欄を閉じる。
   void _addComment() {
     if (_commentController.text.trim().isNotEmpty) {
       setState(() {
@@ -60,6 +63,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   }
 
   @override
+  // コメント一覧、件数、入力欄をまとめたシート全体を描画する。
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
@@ -68,6 +72,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
       ),
       child: Column(
         children: [
+          // シートを示すドラッグハンドル。
           Container(
             margin: const EdgeInsets.only(top: 8),
             width: 40,
@@ -78,6 +83,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
             ),
           ),
 
+          // 人気ワードと操作ボタンのヘッダー。
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: Row(
@@ -144,6 +150,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
               ],
             ),
           ),
+          // コメント件数の見出し。
           Text(
             '${_comments.length} 件のコメント',
             style: const TextStyle(
@@ -154,6 +161,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
           ),
           const SizedBox(height: 8),
 
+          // コメント本体のスクロール一覧。
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -164,14 +172,17 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
             ),
           ),
 
+          // 投稿入力欄との区切り線。
           Divider(height: 1, color: Colors.grey[200]),
 
+          // コメント投稿用の入力バー。
           _buildInputBar(context),
         ],
       ),
     );
   }
 
+  // 返信ツリーを含む単一コメント行を再帰的に描画する。
   Widget _buildCommentItem(CommentData comment, {int depth = 0}) {
     const int maxDepth = 4;
     final bool isExpanded = _expandedIds.contains(comment.id);
@@ -320,6 +331,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
     );
   }
 
+  // コメント送信用の下部入力バーを構築する。
   Widget _buildInputBar(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(

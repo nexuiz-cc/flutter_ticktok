@@ -20,10 +20,12 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
   bool get hasError => _hasError;
   String get errorMessage => _errorMessage;
 
+  // 外部から動画初期化を呼び出す入口。
   void initVideoPlayer(VideoModel video, bool isPaused) {
     _initVideoPlayer(video, isPaused);
   }
 
+  // 動画コントローラと Chewie を生成して再生準備を整える。
   Future<void> _initVideoPlayer(VideoModel video, bool isPaused) async {
     try {
       _desiredPlay = !isPaused;
@@ -80,6 +82,7 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
     }
   }
 
+  // 表示中かどうかに応じて再生・停止を切り替える。
   void updateVideoPlayback(bool isPaused) {
     _desiredPlay = !isPaused;
     if (_videoController.value.isInitialized) {
@@ -91,18 +94,21 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
     }
   }
 
+  // 動画ソースが変わったときにコントローラを作り直す。
   void updateVideoSource(VideoModel newVideo) {
     _videoController.dispose();
     _chewieController?.dispose();
     _initVideoPlayer(newVideo, false);
   }
 
+  // エラー表示から同じ動画の再読み込みを試す。
   void retryLoadVideo() {
     _hasError = false;
     _errorMessage = '';
     _initVideoPlayer((context as dynamic).widget.video, false);
   }
 
+  // 再生関連コントローラを破棄する。
   void disposeVideoPlayer() {
     _videoController.dispose();
     _chewieController?.dispose();

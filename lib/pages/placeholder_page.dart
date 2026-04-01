@@ -8,6 +8,7 @@ class PlaceholderPage extends StatelessWidget {
   const PlaceholderPage({super.key, this.text = '機能開発中'});
 
   @override
+  // 未実装機能向けの共通プレースホルダーを描画する。
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,

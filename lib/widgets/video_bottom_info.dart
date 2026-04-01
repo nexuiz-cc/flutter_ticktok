@@ -17,6 +17,7 @@ class VideoBottomInfo extends StatelessWidget {
   });
 
   @override
+  // 投稿者名、ハッシュタグ、説明文を下部に重ねて表示する。
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,10 +45,7 @@ class VideoBottomInfo extends StatelessWidget {
         Row(
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 1,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 1),
               decoration: BoxDecoration(
                 color: FunnyColors.black.withValues(alpha: 0.7),
                 borderRadius: BorderRadius.circular(20),

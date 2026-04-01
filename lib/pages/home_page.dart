@@ -27,16 +27,19 @@ class _HomePageState extends State<HomePage> {
   ];
 
   @override
+  // ページコントローラを破棄してタブ遷移の状態を解放する。
   void dispose() {
     _pageController.dispose();
     super.dispose();
   }
 
   @override
+  // PageView と下部ナビゲーションを組み合わせてルート画面を描画する。
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: FunnyColors.black,
       extendBodyBehindAppBar: true,
+      // メインコンテンツのページ切り替え領域。
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) {
@@ -50,6 +53,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // 下部の主要タブをまとめて表示するナビゲーションバー。
   Widget _buildBottomNavigationBar() {
     return Container(
       color: FunnyColors.darkgrey,
@@ -77,6 +81,7 @@ class _HomePageState extends State<HomePage> {
     int index, {
     bool isCenter = false,
   }) {
+    // 現在のタブに応じて見た目を切り替える。
     final isActive = _currentPage == index;
 
     if (isCenter) {

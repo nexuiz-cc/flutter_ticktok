@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 mixin VideoGestureManager<T extends StatefulWidget> on State<T> {
   bool _isDoubleTapHandled = false;
 
+  // 短時間の連続ダブルタップを1回にまとめて扱う。
   void handleDoubleTap(VoidCallback? onDoubleTapCallback) {
     if (_isDoubleTapHandled) return;
 

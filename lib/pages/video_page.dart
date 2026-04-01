@@ -29,6 +29,7 @@ class _VideoPageState extends State<VideoPage> {
   String _activeQuery = '';
 
   @override
+  // 動画一覧と各動画のUI状態を初期化する。
   void initState() {
     super.initState();
     _allVideos = List<VideoModel>.from(mockVideos);
@@ -42,6 +43,7 @@ class _VideoPageState extends State<VideoPage> {
   }
 
   @override
+  // 動画本体、右側アクション、コメントシートを重ねて表示する。
   Widget build(BuildContext context) {
     if (_visibleVideos.isEmpty) {
       return _buildEmptySearchState();
@@ -55,6 +57,7 @@ class _VideoPageState extends State<VideoPage> {
       body: Stack(
         fit: StackFit.expand,
         children: [
+          // 縦スワイプで切り替わる動画フィード。
           PageView.builder(
             controller: _pageController,
             scrollDirection: Axis.vertical,
@@ -82,6 +85,7 @@ class _VideoPageState extends State<VideoPage> {
           ),
 
           if (!_showingComments)
+            // 現在の動画に対する右側アクション群。
             Positioned(
               right: 16,
               bottom: 24,
@@ -111,6 +115,7 @@ class _VideoPageState extends State<VideoPage> {
             ),
 
           if (_showingComments)
+            // 動画上に重ねるコメントボトムシート。
             Positioned(
               top: _commentsFullscreen
                   ? MediaQuery.of(context).padding.top
@@ -141,10 +146,12 @@ class _VideoPageState extends State<VideoPage> {
     );
   }
 
+  // ダブルタップ時に現在の動画のいいね状態を更新する。
   void _handleDoubleTap(String videoId) {
     _toggleLike(videoId);
   }
 
+  // いいね状態と表示件数をトグルする。
   void _toggleLike(String videoId) {
     setState(() {
       final state = _videoStates[videoId]!;
@@ -157,6 +164,7 @@ class _VideoPageState extends State<VideoPage> {
     });
   }
 
+  // 検索画面を開いて、戻り値のクエリを反映する。
   Future<void> _openSearch() async {
     final query = await Navigator.of(context).push<String>(
       MaterialPageRoute(
@@ -172,6 +180,7 @@ class _VideoPageState extends State<VideoPage> {
     _applySearch(query);
   }
 
+  // クエリに応じて表示対象を絞り込み、表示位置を先頭に戻す。
   void _applySearch(String query) {
     final normalizedQuery = query.trim();
     final filteredVideos = filterVideosByQuery(_allVideos, normalizedQuery);
@@ -189,6 +198,7 @@ class _VideoPageState extends State<VideoPage> {
     }
   }
 
+  // 検索結果が空になったときの案内画面を描画する。
   Widget _buildEmptySearchState() {
     return Scaffold(
       backgroundColor: FunnyColors.black,
@@ -198,6 +208,7 @@ class _VideoPageState extends State<VideoPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // 再検索用の検索ボタン。
               Align(
                 alignment: Alignment.centerRight,
                 child: IconButton(
@@ -207,6 +218,7 @@ class _VideoPageState extends State<VideoPage> {
                 ),
               ),
               const Spacer(),
+              // 結果なしメッセージ。
               const Text(
                 '該当する内容が見つかりません',
                 style: TextStyle(
@@ -226,6 +238,7 @@ class _VideoPageState extends State<VideoPage> {
                 ),
               ),
               const SizedBox(height: 24),
+              // 再検索と全件表示への導線。
               SizedBox(
                 width: double.infinity,
                 child: FilledButton.icon(
@@ -261,6 +274,7 @@ class _VideoPageState extends State<VideoPage> {
   }
 
   @override
+  // フィード破棄時にページコントローラを解放する。
   void dispose() {
     _pageController.dispose();
     super.dispose();

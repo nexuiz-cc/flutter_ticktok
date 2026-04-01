@@ -7,16 +7,22 @@ class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
+  // プロフィール全体を上から順に配置する。
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: FunnyColors.white,
       body: SafeArea(
         child: Column(
           children: [
+            // ヘッダー情報。
             const ProfileHeader(),
+            // フォロー数などの統計情報。
             const ProfileStats(),
+            // 自己紹介欄。
             const ProfileBio(),
+            // 行動導線のショートカット群。
             const ProfileActionsGrid(),
+            // 投稿カテゴリのタブ領域。
             const Expanded(child: ProfileTabs()),
           ],
         ),
@@ -28,6 +34,7 @@ class ProfilePage extends StatelessWidget {
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({super.key});
   @override
+  // 背景グラデーションと基本プロフィール情報を表示する。
   Widget build(BuildContext context) {
     return Stack(
       children: [
@@ -96,6 +103,7 @@ class ProfileHeader extends StatelessWidget {
 class ProfileStats extends StatelessWidget {
   const ProfileStats({super.key});
   @override
+  // 指標カードとプロフィール編集ボタンを表示する。
   Widget build(BuildContext context) {
     return Container(
       color: FunnyColors.white,
@@ -143,6 +151,7 @@ class _StatItem extends StatelessWidget {
   final String value;
   const _StatItem({required this.label, required this.value});
   @override
+  // 単一のプロフィール指標を縦並びで表示する。
   Widget build(BuildContext context) {
     return SizedBox(
       width: 56,
@@ -171,6 +180,7 @@ class _StatItem extends StatelessWidget {
 class ProfileBio extends StatelessWidget {
   const ProfileBio({super.key});
   @override
+  // 自己紹介文のプレースホルダー行を表示する。
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -192,6 +202,7 @@ class ProfileBio extends StatelessWidget {
 class ProfileActionsGrid extends StatelessWidget {
   const ProfileActionsGrid({super.key});
   @override
+  // よく使うショートカットを横並びで表示する。
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -214,6 +225,7 @@ class _ActionIcon extends StatelessWidget {
   final String label;
   const _ActionIcon({required this.icon, required this.label});
   @override
+  // アイコンとラベルの最小単位を描画する。
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -231,6 +243,7 @@ class _ActionIcon extends StatelessWidget {
 class ProfileTabs extends StatelessWidget {
   const ProfileTabs({super.key});
   @override
+  // タブバーとタブごとの内容をまとめて表示する。
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 5,
@@ -287,6 +300,7 @@ class _CustomTabIndicator extends Decoration {
   const _CustomTabIndicator();
 
   @override
+  // カスタム下線を描画する BoxPainter を返す。
   BoxPainter createBoxPainter([VoidCallback? onChanged]) {
     return _CustomTabIndicatorPainter();
   }
@@ -294,6 +308,7 @@ class _CustomTabIndicator extends Decoration {
 
 class _CustomTabIndicatorPainter extends BoxPainter {
   @override
+  // タブ下部に太めのインジケータ線を描画する。
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
     final double height = configuration.size?.height ?? 0;
     final double indicatorHeight = 3.5;
@@ -316,6 +331,7 @@ class VideoGrid extends StatelessWidget {
   const VideoGrid({super.key});
 
   @override
+  // プロフィール下部の投稿グリッドを仮表示する。
   Widget build(BuildContext context) {
     return GridView.builder(
       padding: const EdgeInsets.all(8),

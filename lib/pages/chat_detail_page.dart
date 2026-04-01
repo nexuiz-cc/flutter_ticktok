@@ -36,6 +36,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   ];
 
   @override
+  // 対象会話の履歴を読み込み、初回表示時に末尾へスクロールする。
   void initState() {
     super.initState();
     _chats = List.from(
@@ -53,6 +54,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   }
 
   @override
+  // 入力まわりのコントローラを破棄する。
   void dispose() {
     _inputController.dispose();
     _scrollController.dispose();
@@ -60,6 +62,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     super.dispose();
   }
 
+  // 新しいメッセージが見えるようにリスト末尾まで移動する。
   void _scrollToBottom() {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
@@ -70,6 +73,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     }
   }
 
+  // テキスト入力を送信し、一覧の末尾へ反映する。
   void _sendMessage() {
     final text = _inputController.text.trim();
     if (text.isEmpty) return;
@@ -88,6 +92,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
   }
 
+  // 追加アクションパネルの開閉を切り替える。
   void _toggleMorePanel() {
     setState(() {
       _showMorePanel = !_showMorePanel;
@@ -97,6 +102,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     });
   }
 
+  // カメラまたはギャラリーから画像を選んで送信する。
   Future<void> _pickImage(ImageSource source) async {
     setState(() => _showMorePanel = false);
     try {
@@ -128,6 +134,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   }
 
   @override
+  // ヘッダー、会話一覧、入力欄、追加パネルでチャット画面を構成する。
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? const Color(0xFF1A1A1A) : Colors.white;
@@ -149,6 +156,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       body: SafeArea(
         child: Column(
           children: [
+            // チャット相手の情報を表示する上部バー。
             Container(
               color: topBarBg,
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -189,6 +197,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             ),
             Divider(height: 1, color: dividerColor),
 
+            // 会話内容のスクロール領域。
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
@@ -206,6 +215,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 },
               ),
             ),
+            // 送信しやすい定型絵文字のクイックバー。
             Container(
               color: topBarBg,
               height: 44,
@@ -235,6 +245,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               ),
             ),
             Divider(height: 1, color: dividerColor),
+            // メッセージ入力と送信操作の下部バー。
             Container(
               color: topBarBg,
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -319,6 +330,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               ),
             ),
 
+            // 添付や追加操作をまとめた展開パネル。
             AnimatedContainer(
               duration: const Duration(milliseconds: 250),
               curve: Curves.easeInOut,
@@ -334,6 +346,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     );
   }
 
+  // 相手ユーザーの丸型アバターを描画する。
   Widget _buildTopAvatar() {
     return SizedBox(
       width: 40,
@@ -350,6 +363,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     );
   }
 
+  // 画像読み込み失敗時の代替アバター。
   Widget _fallbackAvatar(double size) {
     return Container(
       width: size,
@@ -364,6 +378,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     Color bubbleBgOther,
     Color bubbleTextOther,
   ) {
+    // システム通知と通常メッセージで表示を分岐する。
     if (chat.isSystem) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
@@ -462,6 +477,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     );
   }
 
+  // 画像送信や通話などの追加アクションをグリッド表示する。
   Widget _buildMorePanel(bool isDark) {
     final panelBg = isDark ? const Color(0xFF1A1A1A) : const Color(0xFFF2F2F2);
     final iconBg = isDark ? const Color(0xFF2C2C2C) : Colors.white;

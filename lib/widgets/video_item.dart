@@ -46,6 +46,7 @@ class _VideoItemState extends State<VideoItem>
         VideoGestureManager,
         VideoStateManager {
   @override
+  // タブ、いいね状態、アニメーション、動画再生をまとめて初期化する。
   void initState() {
     super.initState();
     initTabs();
@@ -55,6 +56,7 @@ class _VideoItemState extends State<VideoItem>
   }
 
   @override
+  // 外から渡される動画と再生状態の変化を反映する。
   void didUpdateWidget(covariant VideoItem oldWidget) {
     super.didUpdateWidget(oldWidget);
 
@@ -67,6 +69,7 @@ class _VideoItemState extends State<VideoItem>
   }
 
   @override
+  // 動画プレイヤーとアニメーション資源を破棄する。
   void dispose() {
     disposeVideoPlayer();
     disposeAnimations();
@@ -74,6 +77,7 @@ class _VideoItemState extends State<VideoItem>
   }
 
   @override
+  // 動画本体とオーバーレイUIを合成して1セルを描画する。
   Widget build(BuildContext context) {
     if (hasError) {
       return VideoErrorView(
@@ -114,6 +118,7 @@ class _VideoItemState extends State<VideoItem>
 
             return Stack(
               children: [
+                // コメント表示中は縮小プレビューに切り替える動画領域。
                 if (!widget.showComments)
                   Positioned.fill(
                     child: selectedTab == 0
@@ -153,6 +158,7 @@ class _VideoItemState extends State<VideoItem>
                     ),
                   ),
 
+                // 動画を全画面表示へ切り替えるボタン。
                 if (selectedTab == 0 && !widget.showComments)
                   Positioned(
                     left: 0,
@@ -193,6 +199,7 @@ class _VideoItemState extends State<VideoItem>
                     ),
                   ),
 
+                // ダブルタップ時のハートアニメーション。
                 if (showLikeAnimation)
                   Positioned.fill(
                     child: Center(
@@ -210,6 +217,7 @@ class _VideoItemState extends State<VideoItem>
                     ),
                   ),
 
+                // 動画下部の投稿者情報と説明文。
                 if (selectedTab == 0 && !widget.showComments)
                   Positioned(
                     left: 16,
@@ -223,6 +231,7 @@ class _VideoItemState extends State<VideoItem>
                     ),
                   ),
 
+                // 上部のメニュー、並び替えタブ、検索ボタン。
                 Positioned(
                   top: 0,
                   left: 0,

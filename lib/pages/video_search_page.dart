@@ -27,6 +27,7 @@ class _VideoSearchPageState extends State<VideoSearchPage> {
       filterVideosByQuery(widget.videos, _query);
 
   @override
+  // 初期クエリと候補キーワード一覧を準備する。
   void initState() {
     super.initState();
     _searchController = TextEditingController(text: widget.initialQuery)
@@ -42,6 +43,7 @@ class _VideoSearchPageState extends State<VideoSearchPage> {
   }
 
   @override
+  // 検索入力の購読を解除してコントローラを破棄する。
   void dispose() {
     _searchController
       ..removeListener(_handleQueryChanged)
@@ -49,16 +51,19 @@ class _VideoSearchPageState extends State<VideoSearchPage> {
     super.dispose();
   }
 
+  // 入力欄の変化をそのままフィルタ条件へ反映する。
   void _handleQueryChanged() {
     setState(() {
       _query = _searchController.text;
     });
   }
 
+  // 現在のクエリを親画面へ返して検索結果を確定する。
   void _submitSearch([String? value]) {
     Navigator.of(context).pop((value ?? _searchController.text).trim());
   }
 
+  // 候補キーワードを入力欄へ即時反映する。
   void _useKeyword(String keyword) {
     _searchController.value = TextEditingValue(
       text: keyword,
@@ -67,6 +72,7 @@ class _VideoSearchPageState extends State<VideoSearchPage> {
   }
 
   @override
+  // 検索入力、候補、結果グリッドをまとめて描画する。
   Widget build(BuildContext context) {
     final filteredVideos = _filteredVideos;
     final trimmedQuery = _query.trim();
@@ -120,6 +126,7 @@ class _VideoSearchPageState extends State<VideoSearchPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // 検索状態に応じたタイトル表示。
               Text(
                 trimmedQuery.isEmpty
                     ? 'キーワードと説明で検索できます'
@@ -138,6 +145,7 @@ class _VideoSearchPageState extends State<VideoSearchPage> {
               ),
               const SizedBox(height: 16),
               if (trimmedQuery.isEmpty) ...[
+                // よく使う検索キーワード一覧。
                 const Text(
                   'おすすめのキーワード',
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
@@ -178,6 +186,7 @@ class _VideoSearchPageState extends State<VideoSearchPage> {
                     child: filteredVideos.isEmpty
                         ? const _SearchEmptyState(key: ValueKey('empty-state'))
                         : GridView.builder(
+                            // 2列カードで検索結果を表示する。
                             key: ValueKey(
                               'results-${trimmedQuery.toLowerCase()}-${filteredVideos.length}',
                             ),
@@ -233,6 +242,7 @@ class _SearchEmptyState extends StatelessWidget {
   const _SearchEmptyState({super.key});
 
   @override
+  // 該当結果がない場合の案内表示。
   Widget build(BuildContext context) {
     return const Center(
       child: Column(
@@ -266,6 +276,7 @@ class _AnimatedSearchResultCard extends StatelessWidget {
   });
 
   @override
+  // カードごとに少しずつ遅延させて出現アニメーションを付ける。
   Widget build(BuildContext context) {
     final animationDuration = Duration(milliseconds: 220 + (index % 6) * 50);
 
@@ -293,6 +304,7 @@ class _SearchResultCard extends StatelessWidget {
   const _SearchResultCard({required this.video});
 
   @override
+  // サムネイルと説明文を持つ検索結果カード。
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
