@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../common/funny_colors.dart';
 
+// プロフィール画面の最上部。
+// グラデーションカバー画像の上にアバター・ユーザー名・ ID ・フォローボタンを重ねる。
+
+/// プロフィール上部のカバー+アバターウィジェット。
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({super.key});
 

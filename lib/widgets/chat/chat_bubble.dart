@@ -2,11 +2,23 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import '../../data/mock_messages.dart';
 
+// 1つのメッセージ(チャットバブル)を表示するウィジェット。
+// isSystem=true → 日時テキストを中央表示するシステムメッセージ。
+// isMe=true   → 青バブルを右寄せで表示する自分の発言。
+// isMe=false  → グレーバブルをアバター付きで左寄せ。
+// imagePath がある場合は画像バブルを表示する。
+
+/// チャット履歴の 1メッセージバブルウィジェット。
 class ChatBubble extends StatelessWidget {
+  /// メッセージデータ
   final ChatMessage chat;
+  /// 相手のアバター画像 URL（空文字ならフォールバック）
   final String contactAvatarUrl;
+  /// アバターフォールバック時の背景色
   final Color contactAvatarColor;
+  /// 相手バブルの背景色（テーマにより変わる）
   final Color bubbleBgOther;
+  /// 相手バブルの文字色
   final Color bubbleTextOther;
 
   const ChatBubble({

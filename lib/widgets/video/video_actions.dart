@@ -2,11 +2,18 @@ import 'package:flutter/material.dart';
 import '../../common/funny_colors.dart';
 
 // 動画右側のアクションボタン群を表示する。
+// 上から順に: フォローアバター, いいね, コメント, 保存, シェア, 音楽ボタン。
+// VideoPage の Stack 層に Positioned で右下に配置される。
 
+/// 動画画面右側の縦列アクションウィジェット。
 class VideoActions extends StatefulWidget {
+  /// いいね件数（トグルで増減）
   final int likeCount;
+  /// いいね済みかどうか（色変え制御）
   final bool isLiked;
+  /// 投稿者名（アバターフォールバック色の決定に使用）
   final String authorName;
+  /// 投稿者アバター画像のURL
   final String authorAvatar;
   final VoidCallback onLike;
   final VoidCallback onComment;

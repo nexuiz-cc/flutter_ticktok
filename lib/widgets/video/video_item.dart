@@ -12,14 +12,24 @@ import 'video_gesture_manager.dart';
 import 'video_state_manager.dart';
 
 // 1本の動画セルに再生・情報・操作UIをまとめる。
+// VideoPage の PageView.builder から呼び出され、複数のミックスインで
+// 再生/タブ/アニメーション/ジェスチャー/いいね状態の5機能を分担する。
 
+/// PageView の 1イテムとなる動画表示ウィジェット。
 class VideoItem extends StatefulWidget {
+  /// 表示対象の動画メタデータ
   final VideoModel video;
+  /// true のとき再生を停止する（画面外のセルは常に一時停止）
   final bool isPaused;
+  /// 現在のいいね状態
   final bool isLiked;
+  /// 現在のいいね件数表示値
   final int currentLikeCount;
+  /// ダブルタップ時に呼び出す親コールバック（VideoPage でいいね剩渏を更新）
   final VoidCallback? onDoubleTap;
+  /// 検索アイコンタップ時のコールバック
   final VoidCallback? onSearchTap;
+  /// true のときコメントシートを開いて動画を縮小プレビューに切り替える
   final bool showComments;
 
   const VideoItem({

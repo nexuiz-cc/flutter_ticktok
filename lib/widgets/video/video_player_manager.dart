@@ -8,27 +8,36 @@ import 'package:flutter_application/common/funny_colors.dart';
 import '../../models/video_model.dart';
 
 // video_player と Chewie の初期化と再生状態を管理するミックスイン。
+// 全画面時に独自 UI（輝度スライダー・再生・進捗バー）を表示するルートページビルダーを内包する。
+// 実機では ScreenBrightness、シミュレーターでは黒オーバーレイで輝度をシミュレートする。
 
+/// VideoPlayerController と ChewieController のライフサイクルを担当するミックスイン。
 mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
   late VideoPlayerController _videoController;
   ChewieController? _chewieController;
   bool _isLoading = true;
   bool _hasError = false;
   String _errorMessage = '';
+  // true のとき動画を再生する（isPaused=falseのときに設定）
   bool _desiredPlay = false;
-  // 亮度 ValueNotifier：全屏 Route 内の UI がリアルタイムに更新される
+  // 輝度 ValueNotifier：全画面 Route 内の UI がリアルタイムに更新される
   final ValueNotifier<double> _brightnessNotifier = ValueNotifier(0.5);
   double _dragStartY = 0;
   double _dragStartBrightness = 0.5;
-  // 实机=true（调系统亮度），模拟器=false（蒙层降级）
+  // 実機=true（システム輝度を調整）、シミュレーター=false（オーバーレイで代替）
   bool _supportsRealBrightness = false;
   // モデルから取得した表示アスペクト比（null = 縦画面全体）
   double? _displayAspectRatio;
 
+  /// VideoPlayerController を直接参照する場合に使用（正規化済みの哨な）
   VideoPlayerController get videoController => _videoController;
+  /// ChewieController。初期化完了前は null。
   ChewieController? get chewieController => _chewieController;
+  /// 動画の初期化完了待機中かどうか
   bool get isLoading => _isLoading;
+  /// 初期化中にエラーが発生したかどうか
   bool get hasError => _hasError;
+  /// エラー発生時のメッセージ
   String get errorMessage => _errorMessage;
 
   void _onBrightnessDragStart(DragStartDetails d) {
@@ -232,7 +241,7 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
                         fit: StackFit.expand,
                         children: [
                           Positioned.fill(child: controllerProvider),
-                          // 亮度蒙層：模拟器フォールバック用（実機は alpha=0）
+                          // 輝度オーバーレイ：シミュレーター代替用（実機は alpha=0）
                           Positioned.fill(
                             child: IgnorePointer(
                               child: ValueListenableBuilder<double>(
@@ -256,7 +265,7 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
                             width: bar,
                             child: Stack(
                               children: [
-                                // 退出全屏：左上
+                                // 全画面終了ボタン：左上
                                 Positioned(
                                   top: 32,
                                   left: 0,
@@ -270,7 +279,7 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
                                     ),
                                   ),
                                 ),
-                                // 亮度：屏幕垂直居中（上下滑动调节亮度）
+                                // 輝度：縦方向中央（上下スワイプで輝度調整）
                                 Positioned.fill(
                                   child: Center(
                                     child: _buildBrightnessButton(),
@@ -280,7 +289,7 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
                             ),
                           ),
 
-                          // ── 中央：播放 / 暂停 ──
+                          // ── 中央：再生 / 一時停止 ──
                           Positioned.fill(
                             child: Center(
                               child: ValueListenableBuilder<VideoPlayerValue>(
@@ -330,7 +339,7 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
                             ),
                           ),
 
-                          // ── 底部：进度条（视频幅内） ──
+                          // ── 下部：プログレスバー（動画幅内） ──
                           Positioned(
                             left: bar + 8,
                             right: bar + 8,

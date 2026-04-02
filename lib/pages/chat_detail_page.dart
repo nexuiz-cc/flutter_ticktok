@@ -20,9 +20,12 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
   final ImagePicker _picker = ImagePicker();
+  // 表示中のチャットメッセージ一覧（送信時に末尾に追加）
   List<ChatMessage> _chats = [];
+  // 追加アクションパネルの表示状態
   bool _showMorePanel = false;
 
+  // インライン送信用のクイック絵文字一覧
   static const _quickEmojis = ['👋', '🙏', '😊', '😂', '❤️', '👍', '🔥', '😍'];
 
 

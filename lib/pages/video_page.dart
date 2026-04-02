@@ -19,13 +19,20 @@ class VideoPage extends StatefulWidget {
 }
 
 class _VideoPageState extends State<VideoPage> {
+  // 現在表示中の動画インデックス（_visibleVideos を mod して無限ループ）
   int _currentIndex = 0;
   final PageController _pageController = PageController();
+  // 動画ID → VideoState のマップ（いいねなどの指UI状態を保持）
   final Map<String, VideoState> _videoStates = {};
+  // コメントシートを表示中かどうか
   bool _showingComments = false;
+  // コメントシートが全画面展開中かどうか
   bool _commentsFullscreen = false;
+  // 全動画一覧（検索フィルタされない元データ）
   late final List<VideoModel> _allVideos;
+  // 現在表示中の動画一覧（検索フィルタ後、_allVideos の過山集合）
   late List<VideoModel> _visibleVideos;
+  // 現在有効な検索クエリ（空文字のときは全件表示）
   String _activeQuery = '';
 
   @override

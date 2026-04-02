@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../common/funny_colors.dart';
 
+// プロフィール下部のタブコンテンツエリア。
+// 投稿・日常・おすすめ・保存済み・いいねの5タブ。
+// カスタムインジケーター (_CustomTabIndicator) で下線を短く屢く。
+
+/// プロフィール画面下部のタブバー + タブコンテンツウィジェット。
 class ProfileTabs extends StatelessWidget {
   const ProfileTabs({super.key});
 

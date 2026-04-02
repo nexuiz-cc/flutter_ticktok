@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import '../../common/funny_colors.dart';
 import '../../data/mock_messages.dart';
 
+// メッセージ画面上部の横スクロールストーリー一覧を描画する。
+// 最初のアイテムは「デイリー」（ストーリー追加ボタン）、その後フォロワーのストーリー。
+// 未読ストーリーは赤色ボーダーで泳起する。
+
+/// ストーリー一覧を横並びに表示するウィジェット。
 class StoryRow extends StatelessWidget {
+  /// ダークテーマかどうか（アイコン・ボーダー色の切り替え）
   final bool isDark;
 
   const StoryRow({super.key, required this.isDark});

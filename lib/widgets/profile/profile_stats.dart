@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../common/funny_colors.dart';
 
+// プロフィールのカウンターエリア。
+// 左側: いいね・相互・フォロー中・フォロワーの4項目。
+// 右側: 「プロフィールを編集」ボタン。
+
+/// フォロワー数等の統計情報と編集ボタンを表示するウィジェット。
 class ProfileStats extends StatelessWidget {
   const ProfileStats({super.key});
 

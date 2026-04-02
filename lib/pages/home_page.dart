@@ -7,6 +7,7 @@ import 'package:flutter_application/pages/message_page.dart';
 import 'friend_page.dart';
 
 // 下部ナビゲーションと各主要ページを束ねるルート画面。
+// 左から: ホーム(動画), 友達, 撮影, メッセージ, マイプロフィールの5タブ構成。
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,12 +19,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
+  // 各タブに対応するページ内容。タブ順とPageViewのインデックスを対応させる。
   final List<Widget> _pages = [
-    const VideoPage(),
-    const FriendPage(),
-    const PlaceholderPage(text: '撮影'),
-    const MessagePage(),
-    const ProfilePage(),
+    const VideoPage(),         // index 0: ホーム（動画フィード）
+    const FriendPage(),        // index 1: 友達
+    const PlaceholderPage(text: '撮影'),  // index 2: 撮影（未実装）
+    const MessagePage(),       // index 3: メッセージ
+    const ProfilePage(),       // index 4: マイプロフィール
   ];
 
   @override
@@ -40,6 +42,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: FunnyColors.black,
       extendBodyBehindAppBar: true,
       // メインコンテンツのページ切り替え領域。
+      // 左右スワイプでタブ遷移できる。
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) {
@@ -80,6 +83,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // 個々のナビゲーションアイテムを構築する。
+  // [isCenter] のときはプラスボタンUI、それ以外はアイコン+ラベルテキスト。
   Widget _buildNavItem(
     IconData icon,
     String label,
@@ -90,6 +95,7 @@ class _HomePageState extends State<HomePage> {
     final isActive = _currentPage == index;
 
     if (isCenter) {
+      // 中央の撮影ボタン・将来的に撮影画面へ遷移する予定。
       return GestureDetector(
         onTap: () {},
         child: Center(
@@ -109,6 +115,7 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
+    // タップで PageView をアニメーションなしで即時遷移する。
     return GestureDetector(
       onTap: () {
         _pageController.jumpToPage(index);

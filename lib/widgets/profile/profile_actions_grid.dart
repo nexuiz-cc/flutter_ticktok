@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../common/funny_colors.dart';
 
+// プロフィール用2段目のアクショングリッド。
+// 注文・視聴履歴・ウォレット・あとで見る・すべての5項目を横に並べる。
+
+/// プロフィール画面のアクションショートカットグリッド。
 class ProfileActionsGrid extends StatelessWidget {
   const ProfileActionsGrid({super.key});
 

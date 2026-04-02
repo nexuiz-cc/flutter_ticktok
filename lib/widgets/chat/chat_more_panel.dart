@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+// チャット入力メニューの「+」ボタン押下時に表示される追加アクションパネル。
+// 写真・撮影・ビデオ通話など自由に拡張できるグリッドレイアウト。
+// ChatDetailPage から AnimatedContainer で高さをアニメーションして表示/非表示する。
+
+/// チャット送信時の追加アクションプアネルユイジェット。
 class ChatMorePanel extends StatelessWidget {
+  /// ダークテーマかどうか・アイコン・背景色の切り替えに使用
   final bool isDark;
+  /// アイテムインデックスを渡すコールバック（親が ImagePicker 操作を実行）
   final void Function(int index) onActionTap;
 
   const ChatMorePanel({

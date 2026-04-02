@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
 // 動画画面上部タブの選択と並び替えを管理するミックスイン。
+// タブはドラッグで並び替え可能（ReorderableListView使用）。
+// _VideoItemState にミックスインされる。
 
+/// タブ一覧と異動タザ痛（_selectedTab）を保持するミックスイン。
 mixin VideoTabManager<T extends StatefulWidget> on State<T> {
   late List<String> _tabs;
   late int _selectedTab;
 
+  /// 現在のタブ一覧（並び替えが反映される）
   List<String> get tabs => _tabs;
+  /// 現在選択中のタブインデックス
   int get selectedTab => _selectedTab;
   set selectedTab(int value) => _selectedTab = value;
 

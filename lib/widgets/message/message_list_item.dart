@@ -3,9 +3,17 @@ import '../../common/funny_colors.dart';
 import '../../data/mock_messages.dart';
 import '../../pages/chat_detail_page.dart';
 
+// メッセージ一覧の 1行分を描画するウィジェット。
+// アバター・最終メッセージ・時刻・未読バッジ・メンションチップを表示する。
+// タップすると ChatDetailPage へ遷移する。
+
+/// メッセージ一覧の 1イテム行ウィジェット。
 class MessageListItem extends StatelessWidget {
+  /// 表示対象のメッセージアイテムデータ
   final MessageItem msg;
+  /// テーマで決まるテキスト色
   final Color textColor;
+  /// ダークテーマかどうか
   final bool isDark;
 
   const MessageListItem({

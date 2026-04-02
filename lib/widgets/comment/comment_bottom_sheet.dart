@@ -4,10 +4,16 @@ import '../../data/mock_comments.dart';
 import 'comment_item.dart';
 
 // コメント一覧の表示と投稿入力を行うボトムシート。
+// VideoPage の Stack 層に Positioned で重ねて表示される。
+// 全画面モードでは画面上部まで展開、通常モードでは下半分に表示する。
 
+/// 動画上に重ねるコメントボトムシートウィジェット。
 class CommentBottomSheet extends StatefulWidget {
+  /// コメント各データの動画（ID のみ参照展開予定）
   final VideoModel video;
+  /// シートを閉じるボタン押下時のコールバック
   final VoidCallback? onClose;
+  /// 全画面トグルボタン押下時のコールバック
   final VoidCallback? onFullscreen;
 
   const CommentBottomSheet({

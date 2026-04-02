@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import '../../models/video_model.dart';
 
+// 検索結果グリッドで使用するカードウィジェット群。
+// • SearchEmptyState        : 結果0件時の空表示
+// • AnimatedSearchResultCard: index に応じたスタガーアニメーション付きカード
+// • SearchResultCard         : サムネイル・タイトル・投稿者を表示する基本カード
+
+/// 検索結果が0件のときに表示する空ステートウィジェット。
 class SearchEmptyState extends StatelessWidget {
   const SearchEmptyState({super.key});
 
@@ -27,6 +33,8 @@ class SearchEmptyState extends StatelessWidget {
   }
 }
 
+/// ストガーアニメーション付きの検索結果カードラッパー。
+/// [index] が大きいほど遅れてフェードインする。
 class AnimatedSearchResultCard extends StatelessWidget {
   final VideoModel video;
   final int index;
@@ -58,6 +66,7 @@ class AnimatedSearchResultCard extends StatelessWidget {
   }
 }
 
+/// カバー画像・タイトル・投稿者名・いいね数を表示するカードウィジェット。
 class SearchResultCard extends StatelessWidget {
   final VideoModel video;
 

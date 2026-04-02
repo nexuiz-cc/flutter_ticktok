@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import '../../data/mock_comments.dart';
 
+// 1つのコメントとその返信を再帰的に表示するウィジェット。
+// 深さに応じて左インデントを減らし、maxDepth=4 で再帰を射止する。
+// 返信を展開/折りたたみするトグルボタンも含む。
+
+/// 層構造コメント 1項目を表示するウィジェット。
 class CommentItem extends StatefulWidget {
+  /// 表示対象のコメントデータ（返信が含まれる場合は再帰描画）
   final CommentData comment;
+  /// 現在の層深さ（0=トップレベル）。インデントとアバターサイズの計算に使用。
   final int depth;
 
   const CommentItem({

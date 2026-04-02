@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 
 // いいね演出用アニメーション状態を再利用するミックスイン。
+// ダブルタップで赤ハートが大きくなりながらフェードアウトする演出。
+// SingleTickerProviderStateMixin を使う親 State から初期化する必要がある。
 
+/// いいねハートエフェクトのアニメーションを担当するミックスイン。
 mixin VideoAnimationManager<T extends StatefulWidget> on State<T> {
   late AnimationController _animationController;
+  // ハートアイコンを 0.5x から 2x に拡大するアニメーション
   late Animation<double> _scaleAnimation;
+  // 1.0 から 0.0 へフェードアウトするアニメーション
   late Animation<double> _opacityAnimation;
+  // true の間だけハートアイコンを表示する
   bool _showLikeAnimation = false;
 
   AnimationController get animationController => _animationController;
+  /// true のときハートアイコンを画面に表示する
   bool get showLikeAnimation => _showLikeAnimation;
 
   // いいね演出で使う拡大とフェードのアニメーションを初期化する。

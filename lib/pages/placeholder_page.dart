@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 // 未実装機能用の汎用プレースホルダー画面。
+// [text] に機能名を渡すと、中央にその文字を表示する。
+// 将来の展開機能（撮影画面等）の代わりとして使用する。
 
 class PlaceholderPage extends StatelessWidget {
   final String text;
@@ -21,3 +23,4 @@ class PlaceholderPage extends StatelessWidget {
     );
   }
 }
+    

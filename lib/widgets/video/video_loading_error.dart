@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import '../../common/funny_colors.dart';
 
 // 動画の読み込み中表示とエラー表示を切り替えるUI。
+// VideoPlayerManager が isLoading/hasError フラグに応じて返す。
+// • VideoLoadingView : スピナー記号だけのシンプルな待機画面
+// • VideoErrorView   : エラーメッセージと再試行ボタンのエラー画面
 
+/// 動画読み込み中の待機表示ウィジェット。
 class VideoLoadingView extends StatelessWidget {
   const VideoLoadingView({super.key});
 
@@ -18,6 +22,8 @@ class VideoLoadingView extends StatelessWidget {
   }
 }
 
+/// 動画エラー時の表示ウィジェット。
+/// [errorMessage] に原因を表示し、[onRetry] で再度読み込みを試みる。
 class VideoErrorView extends StatelessWidget {
   final String errorMessage;
   final VoidCallback onRetry;
