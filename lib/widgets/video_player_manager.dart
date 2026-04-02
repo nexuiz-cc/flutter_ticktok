@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
+import 'package:flutter_application/common/funny_colors.dart';
 import '../models/video_model.dart';
 
 // video_player と Chewie の初期化と再生状態を管理するミックスイン。
@@ -65,6 +66,54 @@ mixin VideoPlayerManager<T extends StatefulWidget> on State<T> {
           backgroundColor: const Color(0xFF666666),
           bufferedColor: const Color(0xFF666666),
         ),
+        routePageBuilder:
+            (
+              BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+              ChewieControllerProvider controllerProvider,
+            ) {
+              return Scaffold(
+                resizeToAvoidBottomInset: false,
+                body: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      color: Colors.black,
+                      child: controllerProvider,
+                    ),
+                    SafeArea(
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.35),
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: FunnyColors.white.withValues(alpha: 0.2),
+                              ),
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                _chewieController?.exitFullScreen();
+                              },
+                              icon: const Icon(
+                                Icons.chevron_left,
+                                color: FunnyColors.white,
+                              ),
+                              tooltip: '退出全屏',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
       );
 
       _isLoading = false;
