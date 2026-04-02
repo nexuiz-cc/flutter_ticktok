@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../common/funny_colors.dart';
+import '../../common/funny_colors.dart';
 
 // 動画の読み込み中表示とエラー表示を切り替えるUI。
 

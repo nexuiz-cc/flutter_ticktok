@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../common/funny_colors.dart';
+import '../../common/funny_colors.dart';
 
 // 動画下部の投稿者名・説明・ハッシュタグを表示する。
 

@@ -3,9 +3,9 @@ import 'package:flutter_application/common/funny_colors.dart';
 import 'package:flutter_application/common/video_search.dart';
 import 'package:flutter_application/data/mock_videos.dart';
 import 'package:flutter_application/models/video_model.dart';
-import 'package:flutter_application/widgets/video_item.dart';
-import 'package:flutter_application/widgets/video_actions.dart';
-import 'package:flutter_application/widgets/comment_bottom_sheet.dart';
+import 'package:flutter_application/widgets/video/video_item.dart';
+import 'package:flutter_application/widgets/video/video_actions.dart';
+import 'package:flutter_application/widgets/comment/comment_bottom_sheet.dart';
 import 'package:flutter_application/models/video_state.dart';
 import 'package:flutter_application/pages/video_search_page.dart';
 
@@ -49,7 +49,7 @@ class _VideoPageState extends State<VideoPage> {
       return _buildEmptySearchState();
     }
 
-    final currentVideo = _visibleVideos[_currentIndex];
+    final currentVideo = _visibleVideos[_currentIndex % _visibleVideos.length];
     final currentState = _videoStates[currentVideo.id]!;
 
     return Scaffold(
@@ -61,7 +61,7 @@ class _VideoPageState extends State<VideoPage> {
           PageView.builder(
             controller: _pageController,
             scrollDirection: Axis.vertical,
-            itemCount: _visibleVideos.length,
+            itemCount: null, // 無限スクロール
             onPageChanged: (index) {
               setState(() {
                 _currentIndex = index;
@@ -70,7 +70,8 @@ class _VideoPageState extends State<VideoPage> {
               });
             },
             itemBuilder: (context, index) {
-              final video = _visibleVideos[index];
+              final actualIndex = index % _visibleVideos.length;
+              final video = _visibleVideos[actualIndex];
               final state = _videoStates[video.id]!;
               return VideoItem(
                 video: video,

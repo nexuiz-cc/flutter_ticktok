@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../common/funny_colors.dart';
+import '../../common/funny_colors.dart';
 
 // 動画右側のアクションボタン群を表示する。
 

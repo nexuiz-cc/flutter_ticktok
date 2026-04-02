@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_application/common/funny_colors.dart';
 import 'package:chewie/chewie.dart';
-import '../models/video_model.dart';
-import 'video/video_bottom_info.dart';
-import 'video/video_loading_error.dart';
-import 'video/video_tab_manager.dart';
-import 'video/video_player_manager.dart';
-import 'video/video_animation_manager.dart';
-import 'video/video_gesture_manager.dart';
-import 'video/video_state_manager.dart';
+import '../../models/video_model.dart';
+import 'video_bottom_info.dart';
+import 'video_loading_error.dart';
+import 'video_tab_manager.dart';
+import 'video_player_manager.dart';
+import 'video_animation_manager.dart';
+import 'video_gesture_manager.dart';
+import 'video_state_manager.dart';
 
 // 1本の動画セルに再生・情報・操作UIをまとめる。
 

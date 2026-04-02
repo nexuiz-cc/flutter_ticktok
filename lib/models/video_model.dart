@@ -14,6 +14,8 @@ class VideoModel {
   final int shareCount;
   final int recommendCount;
   bool isLiked;
+  // 表示アスペクト比（幅/高さ）。null のとき縦画面全体に表示（全画面ボタン非表示）。
+  final double? displayAspectRatio;
 
   VideoModel({
     required this.id,
@@ -30,5 +32,6 @@ class VideoModel {
     this.shareCount = 0,
     this.recommendCount = 0,
     this.isLiked = false,
+    this.displayAspectRatio = 9.0 / 16.0,
   });
 }

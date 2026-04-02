@@ -58,16 +58,21 @@ class _HomePageState extends State<HomePage> {
     return Container(
       color: FunnyColors.darkgrey,
       child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
+        child: SizedBox(
+          height: 56,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _buildNavItem(Icons.home, 'ホーム', 0),
-              _buildNavItem(Icons.people_outline, '友達', 1),
-              _buildNavItem(Icons.add_circle_outline, '', 2, isCenter: true),
-              _buildNavItem(Icons.notifications_outlined, 'メッセージ', 3),
-              _buildNavItem(Icons.person_outline, 'マイ', 4),
+              Expanded(child: _buildNavItem(Icons.home, 'ホーム', 0)),
+              Expanded(child: _buildNavItem(Icons.people_outline, '友達', 1)),
+              Expanded(
+                child: _buildNavItem(Icons.add_circle_outline, '', 2,
+                    isCenter: true),
+              ),
+              Expanded(
+                  child: _buildNavItem(
+                      Icons.notifications_outlined, 'メッセージ', 3)),
+              Expanded(child: _buildNavItem(Icons.person_outline, 'マイ', 4)),
             ],
           ),
         ),
@@ -87,16 +92,18 @@ class _HomePageState extends State<HomePage> {
     if (isCenter) {
       return GestureDetector(
         onTap: () {},
-        child: Container(
-          width: 50,
-          height: 34,
-          decoration: BoxDecoration(
-            color: FunnyColors.white,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: FunnyColors.white, width: 1.5),
-          ),
-          child: const Center(
-            child: Icon(Icons.add, color: FunnyColors.black, size: 26),
+        child: Center(
+          child: Container(
+            width: 50,
+            height: 34,
+            decoration: BoxDecoration(
+              color: FunnyColors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: FunnyColors.white, width: 1.5),
+            ),
+            child: const Center(
+              child: Icon(Icons.add, color: FunnyColors.black, size: 26),
+            ),
           ),
         ),
       );
@@ -106,8 +113,7 @@ class _HomePageState extends State<HomePage> {
       onTap: () {
         _pageController.jumpToPage(index);
       },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: Center(
         child: Text(
           label,
           style: TextStyle(

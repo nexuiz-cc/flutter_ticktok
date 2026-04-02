@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 import '../data/mock_messages.dart';
+import '../widgets/chat/chat_bubble.dart';
+import '../widgets/chat/chat_more_panel.dart';
 
 // 個別チャットの会話表示と送信操作を担当する画面。
 
@@ -24,16 +25,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
 
   static const _quickEmojis = ['👋', '🙏', '😊', '😂', '❤️', '👍', '🔥', '😍'];
 
-  static const _moreActions = [
-    {'icon': Icons.photo_library_outlined, 'label': '写真'},
-    {'icon': Icons.camera_alt_outlined, 'label': '撮影'},
-    {'icon': Icons.videocam_outlined, 'label': 'ビデオ通話'},
-    {'icon': Icons.weekend_outlined, 'label': '一緒に見る'},
-    {'icon': Icons.wallet_outlined, 'label': 'ギフト'},
-    {'icon': Icons.location_on_outlined, 'label': '位置情報'},
-    {'icon': Icons.swap_horiz, 'label': '送金'},
-    {'icon': Icons.contact_page_outlined, 'label': '連絡先カード'},
-  ];
+
 
   @override
   // 対象会話の履歴を読み込み、初回表示時に末尾へスクロールする。
@@ -53,14 +45,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
   }
 
-  @override
-  // 入力まわりのコントローラを破棄する。
-  void dispose() {
-    _inputController.dispose();
-    _scrollController.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
 
   // 新しいメッセージが見えるようにリスト末尾まで移動する。
   void _scrollToBottom() {
@@ -134,43 +118,55 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   }
 
   @override
-  // ヘッダー、会話一覧、入力欄、追加パネルでチャット画面を構成する。
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? const Color(0xFF1A1A1A) : Colors.white;
-    final bubbleBgOther = isDark
-        ? const Color(0xFF2C2C2C)
-        : const Color(0xFFF0F0F0);
+    final bubbleBgOther =
+        isDark ? const Color(0xFF2C2C2C) : const Color(0xFFF0F0F0);
     final bubbleTextOther = isDark ? Colors.white : Colors.black87;
     final topBarBg = isDark ? const Color(0xFF1A1A1A) : Colors.white;
     final topBarText = isDark ? Colors.white : Colors.black;
     final topBarSub = isDark ? Colors.grey[400]! : Colors.grey[600]!;
-    final inputBg = isDark ? const Color(0xFF2C2C2C) : const Color(0xFFF5F5F5);
+    final inputBg =
+        isDark ? const Color(0xFF2C2C2C) : const Color(0xFFF5F5F5);
     final inputText = isDark ? Colors.white : Colors.black87;
-    final dividerColor = isDark
-        ? const Color(0xFF333333)
-        : const Color(0xFFEEEEEE);
+    final dividerColor =
+        isDark ? const Color(0xFF333333) : const Color(0xFFEEEEEE);
 
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
         child: Column(
           children: [
-            // チャット相手の情報を表示する上部バー。
+            // 上部バー
             Container(
               color: topBarBg,
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               child: Row(
                 children: [
                   IconButton(
-                    icon: Icon(
-                      Icons.arrow_back_ios,
-                      size: 20,
-                      color: topBarText,
-                    ),
+                    icon: Icon(Icons.arrow_back_ios, size: 20, color: topBarText),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
-                  _buildTopAvatar(),
+                  SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: ClipOval(
+                      child: widget.message.avatarUrl.isNotEmpty
+                          ? Image.network(
+                              widget.message.avatarUrl,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, _, _) => Container(
+                                color: widget.message.avatarColor,
+                                child: const Icon(Icons.person, color: Colors.white),
+                              ),
+                            )
+                          : Container(
+                              color: widget.message.avatarColor,
+                              child: const Icon(Icons.person, color: Colors.white),
+                            ),
+                    ),
+                  ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(
@@ -197,25 +193,25 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             ),
             Divider(height: 1, color: dividerColor),
 
-            // 会話内容のスクロール領域。
+            // 会話リスト
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 itemCount: _chats.length,
                 itemBuilder: (context, index) {
-                  return _buildChatBubble(
-                    _chats[index],
-                    bubbleBgOther,
-                    bubbleTextOther,
+                  return ChatBubble(
+                    chat: _chats[index],
+                    contactAvatarUrl: widget.message.avatarUrl,
+                    contactAvatarColor: widget.message.avatarColor,
+                    bubbleBgOther: bubbleBgOther,
+                    bubbleTextOther: bubbleTextOther,
                   );
                 },
               ),
             ),
-            // 送信しやすい定型絵文字のクイックバー。
+
+            // クイック絵文字バー
             Container(
               color: topBarBg,
               height: 44,
@@ -245,7 +241,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               ),
             ),
             Divider(height: 1, color: dividerColor),
-            // メッセージ入力と送信操作の下部バー。
+
+            // 入力バー
             Container(
               color: topBarBg,
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -258,9 +255,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        if (_showMorePanel) {
-                          setState(() => _showMorePanel = false);
-                        }
+                        if (_showMorePanel) setState(() => _showMorePanel = false);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -277,10 +272,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                           style: TextStyle(color: inputText, fontSize: 15),
                           decoration: InputDecoration(
                             hintText: 'メッセージを送る...',
-                            hintStyle: TextStyle(
-                              color: topBarSub,
-                              fontSize: 15,
-                            ),
+                            hintStyle: TextStyle(color: topBarSub, fontSize: 15),
                             border: InputBorder.none,
                             isDense: true,
                             contentPadding: EdgeInsets.zero,
@@ -330,14 +322,23 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               ),
             ),
 
-            // 添付や追加操作をまとめた展開パネル。
+            // 追加パネル
             AnimatedContainer(
               duration: const Duration(milliseconds: 250),
               curve: Curves.easeInOut,
               height: _showMorePanel ? 260 : 0,
               color: isDark ? const Color(0xFF1A1A1A) : const Color(0xFFF2F2F2),
               child: _showMorePanel
-                  ? _buildMorePanel(isDark)
+                  ? ChatMorePanel(
+                      isDark: isDark,
+                      onActionTap: (index) {
+                        if (index == 0) {
+                          _pickImage(ChatMorePanel.sourceForIndex(0));
+                        } else if (index == 1) {
+                          _pickImage(ChatMorePanel.sourceForIndex(1));
+                        }
+                      },
+                    )
                   : const SizedBox.shrink(),
             ),
           ],
@@ -346,220 +347,11 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     );
   }
 
-  // 相手ユーザーの丸型アバターを描画する。
-  Widget _buildTopAvatar() {
-    return SizedBox(
-      width: 40,
-      height: 40,
-      child: ClipOval(
-        child: widget.message.avatarUrl.isNotEmpty
-            ? Image.network(
-                widget.message.avatarUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (_, _, _) => _fallbackAvatar(40),
-              )
-            : _fallbackAvatar(40),
-      ),
-    );
-  }
-
-  // 画像読み込み失敗時の代替アバター。
-  Widget _fallbackAvatar(double size) {
-    return Container(
-      width: size,
-      height: size,
-      color: widget.message.avatarColor,
-      child: const Icon(Icons.person, color: Colors.white),
-    );
-  }
-
-  Widget _buildChatBubble(
-    ChatMessage chat,
-    Color bubbleBgOther,
-    Color bubbleTextOther,
-  ) {
-    // システム通知と通常メッセージで表示を分岐する。
-    if (chat.isSystem) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Center(
-          child: Text(
-            chat.content,
-            style: TextStyle(fontSize: 12, color: Colors.grey[500]),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-    }
-
-    final isMe = chat.isMe;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Row(
-        mainAxisAlignment: isMe
-            ? MainAxisAlignment.end
-            : MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          if (!isMe) ...[
-            SizedBox(
-              width: 36,
-              height: 36,
-              child: ClipOval(
-                child: widget.message.avatarUrl.isNotEmpty
-                    ? Image.network(
-                        widget.message.avatarUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, _, _) => _fallbackAvatar(36),
-                      )
-                    : _fallbackAvatar(36),
-              ),
-            ),
-            const SizedBox(width: 8),
-          ],
-          Flexible(
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 260),
-              padding: chat.imagePath != null
-                  ? EdgeInsets.zero
-                  : const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              decoration: BoxDecoration(
-                color: chat.imagePath != null
-                    ? Colors.transparent
-                    : (isMe ? Colors.blue : bubbleBgOther),
-                borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(18),
-                  topRight: const Radius.circular(18),
-                  bottomLeft: Radius.circular(isMe ? 18 : 4),
-                  bottomRight: Radius.circular(isMe ? 4 : 18),
-                ),
-              ),
-              child: chat.imagePath != null
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: const Radius.circular(18),
-                        topRight: const Radius.circular(18),
-                        bottomLeft: Radius.circular(isMe ? 18 : 4),
-                        bottomRight: Radius.circular(isMe ? 4 : 18),
-                      ),
-                      child: Image.file(
-                        File(chat.imagePath!),
-                        fit: BoxFit.cover,
-                        width: 200,
-                      ),
-                    )
-                  : Text(
-                      chat.content,
-                      style: TextStyle(
-                        color: isMe ? Colors.white : bubbleTextOther,
-                        fontSize: 15,
-                      ),
-                    ),
-            ),
-          ),
-          if (isMe) ...[
-            const SizedBox(width: 8),
-            Container(
-              width: 36,
-              height: 36,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.blue,
-              ),
-              child: const Center(
-                child: Icon(Icons.person, color: Colors.white, size: 20),
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  // 画像送信や通話などの追加アクションをグリッド表示する。
-  Widget _buildMorePanel(bool isDark) {
-    final panelBg = isDark ? const Color(0xFF1A1A1A) : const Color(0xFFF2F2F2);
-    final iconBg = isDark ? const Color(0xFF2C2C2C) : Colors.white;
-    final iconColor = isDark ? Colors.white70 : const Color(0xFF444444);
-    final labelColor = isDark ? Colors.grey[400]! : const Color(0xFF444444);
-
-    return Container(
-      color: panelBg,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      child: Column(
-        children: [
-          Expanded(
-            child: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-                childAspectRatio: 0.85,
-              ),
-              itemCount: _moreActions.length,
-              itemBuilder: (context, index) {
-                final action = _moreActions[index];
-                return GestureDetector(
-                  onTap: () {
-                    if (index == 0) {
-                      _pickImage(ImageSource.gallery);
-                    } else if (index == 1) {
-                      _pickImage(ImageSource.camera);
-                    }
-                  },
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: iconBg,
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: Icon(
-                          action['icon'] as IconData,
-                          color: iconColor,
-                          size: 28,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        action['label'] as String,
-                        style: TextStyle(fontSize: 12, color: labelColor),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 20,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: isDark ? Colors.grey[500] : Colors.grey[400],
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              const SizedBox(width: 6),
-              Container(
-                width: 6,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: isDark ? Colors.grey[700] : Colors.grey[300],
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+  @override
+  void dispose() {
+    _inputController.dispose();
+    _scrollController.dispose();
+    _focusNode.dispose();
+    super.dispose();
   }
 }
